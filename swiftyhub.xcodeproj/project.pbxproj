@@ -14,6 +14,8 @@
 		A22F05DE2D4A4EC500235C7B /* swiftyhubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22F05DD2D4A4EC500235C7B /* swiftyhubTests.swift */; };
 		A22F05E82D4A4EC500235C7B /* swiftyhubUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22F05E72D4A4EC500235C7B /* swiftyhubUITests.swift */; };
 		A22F05EA2D4A4EC500235C7B /* swiftyhubUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22F05E92D4A4EC500235C7B /* swiftyhubUITestsLaunchTests.swift */; };
+		A2CFFDD62D4A84DC00677227 /* ArticleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2CFFDD52D4A84DB00677227 /* ArticleDetailView.swift */; };
+		A2CFFDD82D4ABA1300677227 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2CFFDD72D4ABA1300677227 /* ShimmerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,11 @@
 		A22F05E32D4A4EC500235C7B /* swiftyhubUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftyhubUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A22F05E72D4A4EC500235C7B /* swiftyhubUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftyhubUITests.swift; sourceTree = "<group>"; };
 		A22F05E92D4A4EC500235C7B /* swiftyhubUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftyhubUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		A2CFFDD52D4A84DB00677227 /* ArticleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailView.swift; sourceTree = "<group>"; };
+		A2CFFDD72D4ABA1300677227 /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
+		A2CFFDDA2D4ABDD200677227 /* PlayfairDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PlayfairDisplay-Bold.ttf"; path = "../../../Downloads/Google Fonts Selection/Playfair_Display/static/PlayfairDisplay-Bold.ttf"; sourceTree = "<group>"; };
+		A2CFFDDB2D4ABE0B00677227 /* EBGaramond-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "EBGaramond-Regular.ttf"; path = "../../../Downloads/EB Garamond/static/EBGaramond-Regular.ttf"; sourceTree = "<group>"; };
+		A2CFFDDE2D4AC06000677227 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +81,7 @@
 		A22F05C02D4A4EC300235C7B = {
 			isa = PBXGroup;
 			children = (
+				A2CFFDD92D4ABDAF00677227 /* Resources */,
 				A22F05CB2D4A4EC300235C7B /* swiftyhub */,
 				A22F05DC2D4A4EC500235C7B /* swiftyhubTests */,
 				A22F05E62D4A4EC500235C7B /* swiftyhubUITests */,
@@ -94,8 +102,11 @@
 		A22F05CB2D4A4EC300235C7B /* swiftyhub */ = {
 			isa = PBXGroup;
 			children = (
+				A2CFFDDE2D4AC06000677227 /* Info.plist */,
 				A22F05CC2D4A4EC300235C7B /* swiftyhubApp.swift */,
 				A22F05CE2D4A4EC300235C7B /* ContentView.swift */,
+				A2CFFDD52D4A84DB00677227 /* ArticleDetailView.swift */,
+				A2CFFDD72D4ABA1300677227 /* ShimmerView.swift */,
 				A22F05D02D4A4EC500235C7B /* Assets.xcassets */,
 				A22F05D22D4A4EC500235C7B /* Preview Content */,
 			);
@@ -125,6 +136,15 @@
 				A22F05E92D4A4EC500235C7B /* swiftyhubUITestsLaunchTests.swift */,
 			);
 			path = swiftyhubUITests;
+			sourceTree = "<group>";
+		};
+		A2CFFDD92D4ABDAF00677227 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A2CFFDDB2D4ABE0B00677227 /* EBGaramond-Regular.ttf */,
+				A2CFFDDA2D4ABDD200677227 /* PlayfairDisplay-Bold.ttf */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,6 +277,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2CFFDD82D4ABA1300677227 /* ShimmerView.swift in Sources */,
+				A2CFFDD62D4A84DC00677227 /* ArticleDetailView.swift in Sources */,
 				A22F05CF2D4A4EC300235C7B /* ContentView.swift in Sources */,
 				A22F05CD2D4A4EC300235C7B /* swiftyhubApp.swift in Sources */,
 			);
