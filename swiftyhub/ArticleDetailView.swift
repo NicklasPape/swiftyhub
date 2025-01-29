@@ -22,14 +22,18 @@ struct ArticleDetailView: View {
                     Text(article.title)
                         .font(.custom("PlayfairDisplay-Bold", size: 24))
                         .foregroundColor(Color("DarkGrey"))
+                        .baselineOffset(1.5)
 
                     Text("\(article.source.name) • \(formatDate(article.publishedAt))")
                         .font(.custom("EBGaramond-Regular", size: 14))
                         .foregroundColor(Color("MutedGray"))
+                        .baselineOffset(1.5)
 
                     Text((article.content ?? "Full article available via link.").prefix(600) + "...")
                         .font(.custom("EBGaramond-Regular", size: 16))
                         .foregroundColor(Color("DarkGrey"))
+                        .baselineOffset(1.5)
+
 
                     Link("Read Full Article", destination: URL(string: article.url)!)
                         .font(.custom("EBGaramond-Regular", size: 18))

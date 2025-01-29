@@ -87,10 +87,15 @@ struct ContentView: View {
                                                         Text(article.title)
                                                             .font(.custom("Playfair Display Bold", size: 18))
                                                             .foregroundColor(Color("SoftWhite"))
+                                                            .baselineOffset(1.5)
+                                                            .multilineTextAlignment(/*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/)
+
                                                         
                                                         Text("\(article.source.name) • \(formatDate(article.publishedAt))")
                                                             .font(.custom("EBGaramond-Regular", size: 14))
                                                             .foregroundColor(Color("SoftWhite"))
+                                                            .baselineOffset(1.5)
+
                                                     }
                                                     .padding(20)
                                                     .background(
@@ -117,7 +122,7 @@ struct ContentView: View {
                                                     .scaledToFill()
                                                     .frame(width: 100, height: 100)
                                                     .clipped()
-                                                    .cornerRadius(10)
+                                                    .cornerRadius(8)
                                             } placeholder: {
                                                 ShimmerView()
                                                     .frame(width: 100, height: 100)
@@ -128,9 +133,14 @@ struct ContentView: View {
                                             Text(article.title)
                                                 .font(.custom("Playfair Display Bold", size: 16))
                                                 .foregroundColor(Color("DarkGrey"))
+                                                .baselineOffset(1.5)
+                                                .multilineTextAlignment(/*@START_MENU_TOKEN@*/.leading/*@END_MENU_TOKEN@*/)
+
                                             Text("\(article.source.name) • \(formatDate(article.publishedAt))")
-                                                .font(.custom("EB Garamond Regular", size: 14))
-                                                .foregroundColor(Color("DarkGrey"))
+                                                .font(.custom("EB Garamond Regular", size: 12))
+                                                .foregroundColor(Color("MutedGray"))
+                                                .baselineOffset(1.5)
+
                                         }
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     }
