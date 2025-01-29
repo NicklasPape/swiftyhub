@@ -7,9 +7,10 @@ struct Article: Identifiable, Codable {
     let urlToImage: String?
     let publishedAt: String
     let url: String
-    
+    let content: String? // ✅ Added missing `content` property
+
     private enum CodingKeys: String, CodingKey {
-        case title, source, urlToImage, publishedAt, url
+        case title, source, urlToImage, publishedAt, url, content
     }
 }
 
@@ -54,7 +55,7 @@ struct NewsResponse: Codable {
 
 struct ContentView: View {
     @StateObject var viewModel = NewsViewModel()
-    
+
     var body: some View {
         NavigationView {
             ScrollView {
@@ -66,7 +67,7 @@ struct ContentView: View {
                     } else {
                         if viewModel.articles.count >= 5 {
                             ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 10) {
+                                HStack(spacing: 12) {
                                     ForEach(viewModel.articles.prefix(5)) { article in
                                         NavigationLink(destination: ArticleDetailView(article: article)) {
                                             if let imageUrl = article.urlToImage, let url = URL(string: imageUrl) {
@@ -76,19 +77,20 @@ struct ContentView: View {
                                                             .scaledToFill()
                                                             .frame(width: 300, height: 200)
                                                             .clipped()
-                                                            .cornerRadius(15)
+                                                            .cornerRadius(12)
                                                     } placeholder: {
                                                         ShimmerView()
                                                             .frame(width: 300, height: 200)
                                                     }
                                                     
-                                                    VStack(alignment: .leading, spacing: 4) {
+                                                    VStack(alignment: .leading, spacing: 8) {
                                                         Text(article.title)
-                                                            .font(.custom("PlayfairDisplay-Bold", size: 20))
-                                                            .foregroundColor(Color("DarkGrey"))
+                                                            .font(.custom("Playfair Display Bold", size: 18))
+                                                            .foregroundColor(Color("SoftWhite"))
+                                                        
                                                         Text("\(article.source.name) • \(formatDate(article.publishedAt))")
                                                             .font(.custom("EBGaramond-Regular", size: 14))
-                                                            .foregroundColor(Color("DarkGrey"))
+                                                            .foregroundColor(Color("SoftWhite"))
                                                     }
                                                     .padding(20)
                                                     .background(
@@ -96,7 +98,7 @@ struct ContentView: View {
                                                     )
                                                 }
                                                 .frame(width: 300, height: 200)
-                                                .cornerRadius(15)
+                                                .cornerRadius(12)
                                             }
                                         }
                                     }
@@ -104,11 +106,11 @@ struct ContentView: View {
                                 .padding(.leading)
                             }
                         }
-                        
+
                         LazyVStack(spacing: 8) {
                             ForEach(viewModel.articles) { article in
                                 NavigationLink(destination: ArticleDetailView(article: article)) {
-                                    HStack(spacing: 10) {
+                                    HStack(spacing: 8) {
                                         if let imageUrl = article.urlToImage, let url = URL(string: imageUrl) {
                                             AsyncImage(url: url) { image in
                                                 image.resizable()
@@ -124,15 +126,15 @@ struct ContentView: View {
                                         
                                         VStack(alignment: .leading, spacing: 4) {
                                             Text(article.title)
-                                                .font(.custom("PlayfairDisplay-Bold", size: 18))
+                                                .font(.custom("Playfair Display Bold", size: 16))
                                                 .foregroundColor(Color("DarkGrey"))
                                             Text("\(article.source.name) • \(formatDate(article.publishedAt))")
-                                                .font(.custom("EBGaramond-Regular", size: 14))
+                                                .font(.custom("EB Garamond Regular", size: 14))
                                                 .foregroundColor(Color("DarkGrey"))
                                         }
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     }
-                                    .padding(.vertical, 8)
+                                    .padding(.vertical, 12)
                                     .padding(.horizontal)
                                 }
                             }
