@@ -1,0 +1,13 @@
+name: Schedule Fetch News
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # Runs every day at midnight UTC
+  workflow_dispatch:  # Allows manual triggering from GitHub
+
+jobs:
+  fetch_news:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Supabase Function
+        run: curl -X POST "https://xhjsundjajtfukpqpjxp.supabase.co/functions/v1/fetch_news"
