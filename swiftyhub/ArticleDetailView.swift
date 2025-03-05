@@ -33,12 +33,13 @@ public struct ArticleDetailView: View {
 
                     VStack(alignment: .leading, spacing: 16) {
                         Text(article.title)
-                            .font(.custom("AvenirNext-DemiBold", size: 24))
+                            .font(.custom("CanelaTrial-Regular", size: 36))
                             .fixedSize(horizontal: false, vertical: true)
-                            .padding(.top, 16)
+                            .padding(.top, 20)
+                            .lineSpacing(6)
 
                         Text(article.ai_content)
-                            .font(.custom("AvenirNext-Regular", size: 17))
+                            .font(.custom("AvenirNext-Regular", size: 18))
                             .fixedSize(horizontal: false, vertical: true)
                             .lineSpacing(4)
 
@@ -49,7 +50,7 @@ public struct ArticleDetailView: View {
                                 .padding(.top, 8)
                         }
                     }
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 20)
                     .padding(.bottom, 32)
                 }
             }
@@ -63,8 +64,8 @@ public struct ArticleDetailView: View {
                     .background(.black.opacity(0.6))
                     .clipShape(Circle())
             }
-            .padding(.top, 48)
-            .padding(.leading, 16)
+            .padding(.top, 8)
+            .padding(.leading, 20)
         }
         .navigationBarHidden(true)
     }
