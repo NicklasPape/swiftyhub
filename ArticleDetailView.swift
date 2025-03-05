@@ -1,10 +1,24 @@
 import SwiftUI
 import Foundation
+import WebKit
+
+struct SafariView: UIViewRepresentable {
+    let url: URL
+    
+    func makeUIView(context: Context) -> WKWebView {
+        let webView = WKWebView()
+        webView.load(URLRequest(url: url))
+        return webView
+    }
+    
+    func updateUIView(_ uiView: WKWebView, context: Context) {}
+}
 
 public struct ArticleDetailView: View {
     public let article: Article
     private let bucketUrl = "https://xhjsundjajtfukpqpjxp.supabase.co/storage/v1/object/public/news-images/"
     @Environment(\.dismiss) private var dismiss
+    @State private var showWebView = false
 
     public init(article: Article) {
         self.article = article
@@ -49,10 +63,27 @@ public struct ArticleDetailView: View {
                             .lineSpacing(4)
 
                         if let url = URL(string: article.source_url) {
-                            Link("Read more", destination: url)
-                                .font(.headline)
-                                .foregroundColor(.blue)
-                                .padding(.top, 8)
+                            Button {
+                                showWebView = true
+                            } label: {
+                                Text("Read more")
+                                    .font(.custom("AvenirNext-Regular", size: 16).weight(.medium))
+                                    .foregroundColor(.white)
+                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, 20)
+                                    .background(Color.black)
+                                    .cornerRadius(8)
+                            }
+                            .padding(.top, 16)
+                            .sheet(isPresented: $showWebView) {
+                                NavigationView {
+                                    SafariView(url: url)
+                                        .navigationBarItems(trailing: Button("Done") {
+                                            showWebView = false
+                                        })
+                                }
+                                .navigationViewStyle(StackNavigationViewStyle())
+                            }
                         }
                     }
                     .padding(.horizontal, 20)

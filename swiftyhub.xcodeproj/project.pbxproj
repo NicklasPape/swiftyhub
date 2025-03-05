@@ -7,22 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A219FBD02D68A72C00CA222C /* EBGaramond-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A219FBCE2D68A72C00CA222C /* EBGaramond-Regular.ttf */; };
-		A219FBD12D68A72C00CA222C /* PlayfairDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A219FBCF2D68A72C00CA222C /* PlayfairDisplay-Bold.ttf */; };
-		A219FBD72D68AE8200CA222C /* Canela-Regular-Trial.otf in Resources */ = {isa = PBXBuildFile; fileRef = A219FBD62D68AE8200CA222C /* Canela-Regular-Trial.otf */; };
-		A22F05CD2D4A4EC300235C7B /* swiftyhubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22F05CC2D4A4EC300235C7B /* swiftyhubApp.swift */; };
-		A22F05CF2D4A4EC300235C7B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22F05CE2D4A4EC300235C7B /* ContentView.swift */; };
-		A22F05D12D4A4EC500235C7B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A22F05D02D4A4EC500235C7B /* Assets.xcassets */; };
-		A22F05D42D4A4EC500235C7B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A22F05D32D4A4EC500235C7B /* Preview Assets.xcassets */; };
+		A21D4A502D78577E000142B2 /* OpenAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21D4A482D78577E000142B2 /* OpenAIService.swift */; };
+		A21D4A512D78577E000142B2 /* NewsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21D4A492D78577E000142B2 /* NewsService.swift */; };
+		A21D4A522D78577E000142B2 /* swiftyhubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21D4A4A2D78577E000142B2 /* swiftyhubApp.swift */; };
+		A21D4A532D78577E000142B2 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21D4A4B2D78577E000142B2 /* Article.swift */; };
+		A21D4A542D78577E000142B2 /* ArticleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21D4A4C2D78577E000142B2 /* ArticleDetailView.swift */; };
+		A21D4A552D78577E000142B2 /* ArticleTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21D4A4D2D78577E000142B2 /* ArticleTimestampView.swift */; };
+		A21D4A562D78577E000142B2 /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21D4A4E2D78577E000142B2 /* DateFormatter+Extensions.swift */; };
+		A21D4A572D78577E000142B2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21D4A4F2D78577E000142B2 /* ContentView.swift */; };
+		A21D4A5C2D7857A3000142B2 /* Canela-Regular-Trial.otf in Resources */ = {isa = PBXBuildFile; fileRef = A21D4A5B2D7857A3000142B2 /* Canela-Regular-Trial.otf */; };
 		A22F05DE2D4A4EC500235C7B /* swiftyhubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22F05DD2D4A4EC500235C7B /* swiftyhubTests.swift */; };
 		A22F05E82D4A4EC500235C7B /* swiftyhubUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22F05E72D4A4EC500235C7B /* swiftyhubUITests.swift */; };
 		A22F05EA2D4A4EC500235C7B /* swiftyhubUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22F05E92D4A4EC500235C7B /* swiftyhubUITestsLaunchTests.swift */; };
-		A276B5CF2D70817100A2C8E8 /* OpenAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A276B5CE2D70817100A2C8E8 /* OpenAIService.swift */; };
-		A276B5D12D7083B600A2C8E8 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = A276B5D02D7083B600A2C8E8 /* Article.swift */; };
-		A276B5D32D7083D700A2C8E8 /* NewsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A276B5D22D7083D700A2C8E8 /* NewsService.swift */; };
-		A2CFFDD62D4A84DC00677227 /* ArticleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2CFFDD52D4A84DB00677227 /* ArticleDetailView.swift */; };
-		A2FCE6332D784F570090656C /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2FCE6322D784F570090656C /* DateFormatter+Extensions.swift */; };
-		A2FCE6352D784F6D0090656C /* ArticleTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2FCE6342D784F6D0090656C /* ArticleTimestampView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,27 +39,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A219FBCE2D68A72C00CA222C /* EBGaramond-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "EBGaramond-Regular.ttf"; path = "swiftyhub/Resources/EBGaramond-Regular.ttf"; sourceTree = SOURCE_ROOT; };
-		A219FBCF2D68A72C00CA222C /* PlayfairDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "PlayfairDisplay-Bold.ttf"; path = "swiftyhub/Resources/PlayfairDisplay-Bold.ttf"; sourceTree = SOURCE_ROOT; };
-		A219FBD22D68AC9C00CA222C /* Canela-Regular-Trial.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Canela-Regular-Trial.otf"; path = "../swiftyhub/Resources/Canela-Regular-Trial.otf"; sourceTree = "<group>"; };
-		A219FBD62D68AE8200CA222C /* Canela-Regular-Trial.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Canela-Regular-Trial.otf"; path = "swiftyhub/Resources/Canela-Regular-Trial.otf"; sourceTree = "<group>"; };
+		A21D4A482D78577E000142B2 /* OpenAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
+		A21D4A492D78577E000142B2 /* NewsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsService.swift; sourceTree = "<group>"; };
+		A21D4A4A2D78577E000142B2 /* swiftyhubApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftyhubApp.swift; sourceTree = "<group>"; };
+		A21D4A4B2D78577E000142B2 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
+		A21D4A4C2D78577E000142B2 /* ArticleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailView.swift; sourceTree = "<group>"; };
+		A21D4A4D2D78577E000142B2 /* ArticleTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleTimestampView.swift; sourceTree = "<group>"; };
+		A21D4A4E2D78577E000142B2 /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
+		A21D4A4F2D78577E000142B2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A21D4A582D785792000142B2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A21D4A5A2D785792000142B2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A21D4A5B2D7857A3000142B2 /* Canela-Regular-Trial.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Canela-Regular-Trial.otf"; sourceTree = "<group>"; };
 		A22F05C92D4A4EC300235C7B /* swiftyhub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftyhub.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A22F05CC2D4A4EC300235C7B /* swiftyhubApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftyhubApp.swift; sourceTree = "<group>"; };
-		A22F05CE2D4A4EC300235C7B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		A22F05D02D4A4EC500235C7B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A22F05D32D4A4EC500235C7B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A22F05D92D4A4EC500235C7B /* swiftyhubTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftyhubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A22F05DD2D4A4EC500235C7B /* swiftyhubTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftyhubTests.swift; sourceTree = "<group>"; };
 		A22F05E32D4A4EC500235C7B /* swiftyhubUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftyhubUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A22F05E72D4A4EC500235C7B /* swiftyhubUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftyhubUITests.swift; sourceTree = "<group>"; };
 		A22F05E92D4A4EC500235C7B /* swiftyhubUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftyhubUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		A276B5CE2D70817100A2C8E8 /* OpenAIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIService.swift; sourceTree = "<group>"; };
-		A276B5D02D7083B600A2C8E8 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
-		A276B5D22D7083D700A2C8E8 /* NewsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsService.swift; sourceTree = "<group>"; };
-		A2CFFDD52D4A84DB00677227 /* ArticleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailView.swift; sourceTree = "<group>"; };
-		A2CFFDDE2D4AC06000677227 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Info.plist; sourceTree = "<group>"; };
-		A2FCE6322D784F570090656C /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
-		A2FCE6342D784F6D0090656C /* ArticleTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleTimestampView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,12 +83,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A21D4A592D785792000142B2 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				A21D4A582D785792000142B2 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		A22F05C02D4A4EC300235C7B = {
 			isa = PBXGroup;
 			children = (
-				A219FBD62D68AE8200CA222C /* Canela-Regular-Trial.otf */,
+				A21D4A5A2D785792000142B2 /* Assets.xcassets */,
+				A21D4A592D785792000142B2 /* Preview Content */,
+				A21D4A4B2D78577E000142B2 /* Article.swift */,
+				A21D4A4C2D78577E000142B2 /* ArticleDetailView.swift */,
+				A21D4A4D2D78577E000142B2 /* ArticleTimestampView.swift */,
+				A21D4A4F2D78577E000142B2 /* ContentView.swift */,
+				A21D4A4E2D78577E000142B2 /* DateFormatter+Extensions.swift */,
+				A21D4A492D78577E000142B2 /* NewsService.swift */,
+				A21D4A482D78577E000142B2 /* OpenAIService.swift */,
+				A21D4A4A2D78577E000142B2 /* swiftyhubApp.swift */,
 				A2CFFDD92D4ABDAF00677227 /* Resources */,
-				A22F05CB2D4A4EC300235C7B /* swiftyhub */,
 				A22F05DC2D4A4EC500235C7B /* swiftyhubTests */,
 				A22F05E62D4A4EC500235C7B /* swiftyhubUITests */,
 				A22F05CA2D4A4EC300235C7B /* Products */,
@@ -111,32 +119,6 @@
 				A22F05E32D4A4EC500235C7B /* swiftyhubUITests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		A22F05CB2D4A4EC300235C7B /* swiftyhub */ = {
-			isa = PBXGroup;
-			children = (
-				A2CFFDDE2D4AC06000677227 /* Info.plist */,
-				A22F05CC2D4A4EC300235C7B /* swiftyhubApp.swift */,
-				A22F05CE2D4A4EC300235C7B /* ContentView.swift */,
-				A2CFFDD52D4A84DB00677227 /* ArticleDetailView.swift */,
-				A276B5CE2D70817100A2C8E8 /* OpenAIService.swift */,
-				A276B5D02D7083B600A2C8E8 /* Article.swift */,
-				A276B5D22D7083D700A2C8E8 /* NewsService.swift */,
-				A22F05D02D4A4EC500235C7B /* Assets.xcassets */,
-				A22F05D22D4A4EC500235C7B /* Preview Content */,
-				A2FCE6322D784F570090656C /* DateFormatter+Extensions.swift */,
-				A2FCE6342D784F6D0090656C /* ArticleTimestampView.swift */,
-			);
-			path = swiftyhub;
-			sourceTree = "<group>";
-		};
-		A22F05D22D4A4EC500235C7B /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				A22F05D32D4A4EC500235C7B /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		A22F05DC2D4A4EC500235C7B /* swiftyhubTests */ = {
@@ -159,9 +141,7 @@
 		A2CFFDD92D4ABDAF00677227 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A219FBD22D68AC9C00CA222C /* Canela-Regular-Trial.otf */,
-				A219FBCE2D68A72C00CA222C /* EBGaramond-Regular.ttf */,
-				A219FBCF2D68A72C00CA222C /* PlayfairDisplay-Bold.ttf */,
+				A21D4A5B2D7857A3000142B2 /* Canela-Regular-Trial.otf */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -270,11 +250,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A219FBD72D68AE8200CA222C /* Canela-Regular-Trial.otf in Resources */,
-				A219FBD12D68A72C00CA222C /* PlayfairDisplay-Bold.ttf in Resources */,
-				A219FBD02D68A72C00CA222C /* EBGaramond-Regular.ttf in Resources */,
-				A22F05D42D4A4EC500235C7B /* Preview Assets.xcassets in Resources */,
-				A22F05D12D4A4EC500235C7B /* Assets.xcassets in Resources */,
+				A21D4A5C2D7857A3000142B2 /* Canela-Regular-Trial.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,14 +275,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A2FCE6352D784F6D0090656C /* ArticleTimestampView.swift in Sources */,
-				A276B5D32D7083D700A2C8E8 /* NewsService.swift in Sources */,
-				A2CFFDD62D4A84DC00677227 /* ArticleDetailView.swift in Sources */,
-				A2FCE6332D784F570090656C /* DateFormatter+Extensions.swift in Sources */,
-				A276B5D12D7083B600A2C8E8 /* Article.swift in Sources */,
-				A22F05CF2D4A4EC300235C7B /* ContentView.swift in Sources */,
-				A22F05CD2D4A4EC300235C7B /* swiftyhubApp.swift in Sources */,
-				A276B5CF2D70817100A2C8E8 /* OpenAIService.swift in Sources */,
+				A21D4A502D78577E000142B2 /* OpenAIService.swift in Sources */,
+				A21D4A512D78577E000142B2 /* NewsService.swift in Sources */,
+				A21D4A522D78577E000142B2 /* swiftyhubApp.swift in Sources */,
+				A21D4A532D78577E000142B2 /* Article.swift in Sources */,
+				A21D4A542D78577E000142B2 /* ArticleDetailView.swift in Sources */,
+				A21D4A552D78577E000142B2 /* ArticleTimestampView.swift in Sources */,
+				A21D4A562D78577E000142B2 /* DateFormatter+Extensions.swift in Sources */,
+				A21D4A572D78577E000142B2 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,7 +445,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"swiftyhub/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
 				DEVELOPMENT_TEAM = H8UC47S7NP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -485,6 +461,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nicklas.swiftyhub;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -498,7 +478,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"swiftyhub/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Preview Content\"";
 				DEVELOPMENT_TEAM = H8UC47S7NP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -514,6 +494,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = nicklas.swiftyhub;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
