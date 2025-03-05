@@ -21,6 +21,8 @@
 		A276B5D12D7083B600A2C8E8 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = A276B5D02D7083B600A2C8E8 /* Article.swift */; };
 		A276B5D32D7083D700A2C8E8 /* NewsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A276B5D22D7083D700A2C8E8 /* NewsService.swift */; };
 		A2CFFDD62D4A84DC00677227 /* ArticleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2CFFDD52D4A84DB00677227 /* ArticleDetailView.swift */; };
+		A2FCE6332D784F570090656C /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2FCE6322D784F570090656C /* DateFormatter+Extensions.swift */; };
+		A2FCE6352D784F6D0090656C /* ArticleTimestampView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2FCE6342D784F6D0090656C /* ArticleTimestampView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +62,8 @@
 		A276B5D22D7083D700A2C8E8 /* NewsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsService.swift; sourceTree = "<group>"; };
 		A2CFFDD52D4A84DB00677227 /* ArticleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleDetailView.swift; sourceTree = "<group>"; };
 		A2CFFDDE2D4AC06000677227 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Info.plist; sourceTree = "<group>"; };
+		A2FCE6322D784F570090656C /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
+		A2FCE6342D784F6D0090656C /* ArticleTimestampView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleTimestampView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +125,8 @@
 				A276B5D22D7083D700A2C8E8 /* NewsService.swift */,
 				A22F05D02D4A4EC500235C7B /* Assets.xcassets */,
 				A22F05D22D4A4EC500235C7B /* Preview Content */,
+				A2FCE6322D784F570090656C /* DateFormatter+Extensions.swift */,
+				A2FCE6342D784F6D0090656C /* ArticleTimestampView.swift */,
 			);
 			path = swiftyhub;
 			sourceTree = "<group>";
@@ -293,8 +299,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2FCE6352D784F6D0090656C /* ArticleTimestampView.swift in Sources */,
 				A276B5D32D7083D700A2C8E8 /* NewsService.swift in Sources */,
 				A2CFFDD62D4A84DC00677227 /* ArticleDetailView.swift in Sources */,
+				A2FCE6332D784F570090656C /* DateFormatter+Extensions.swift in Sources */,
 				A276B5D12D7083B600A2C8E8 /* Article.swift in Sources */,
 				A22F05CF2D4A4EC300235C7B /* ContentView.swift in Sources */,
 				A22F05CD2D4A4EC300235C7B /* swiftyhubApp.swift in Sources */,

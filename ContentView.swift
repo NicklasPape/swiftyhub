@@ -8,7 +8,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                List(articles) { article in
+                List(sortedArticles) { article in
                     NavigationLink(destination: ArticleDetailView(article: article)) {
                         HStack {
                             if let imagePath = article.image_path {
@@ -32,9 +32,7 @@ struct ContentView: View {
                             VStack(alignment: .leading) {
                                 Text(article.title)
                                     .font(.custom("AvenirNext-DemiBold", size: 17))
-                                Text(article.created_at)
-                                    .font(.custom("AvenirNext-Regular", size: 14))
-                                    .foregroundColor(.gray)
+                                ArticleTimestampView(timestamp: article.created_at, showTime: false)
                             }
                         }
                         .padding(.vertical, 4)
@@ -67,5 +65,9 @@ struct ContentView: View {
                 self.isLoading = false
             }
         }
+    }
+
+    var sortedArticles: [Article] {
+        return articles.sorted { $0.created_at > $1.created_at }
     }
 }

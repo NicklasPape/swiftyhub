@@ -38,6 +38,11 @@ public struct ArticleDetailView: View {
                             .padding(.top, 20)
                             .lineSpacing(6)
 
+                        ArticleTimestampView(timestamp: article.created_at)
+                            .font(.custom("AvenirNext-Regular", size: 14))
+                            .foregroundColor(.gray)
+                            .padding(.top, -8)
+
                         Text(article.ai_content)
                             .font(.custom("AvenirNext-Regular", size: 18))
                             .fixedSize(horizontal: false, vertical: true)
