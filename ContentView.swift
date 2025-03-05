@@ -36,12 +36,7 @@ struct ContentView: View {
                     if isContentReady {
                         List {
                             ForEach(Array(sortedArticles.enumerated()), id: \.element.id) { index, article in
-                                NavigationLink(isActive: Binding(
-                                    get: { selectedArticleId == article.id },
-                                    set: { if $0 { selectedArticleId = article.id } else { selectedArticleId = nil } }
-                                )) {
-                                    ArticleDetailView(article: article)
-                                } label: {
+                                NavigationLink(destination: ArticleDetailView(article: article)) {
                                     HStack(alignment: .top, spacing: 8) {
                                         if let imagePath = article.image_path {
                                             AsyncImage(url: URL(string: bucketUrl + imagePath)) { image in
@@ -124,7 +119,7 @@ struct ContentView: View {
                     checkForDeepLink()
                 }
             }
-            .navigationTitle("Swiftynews")
+            .navigationTitle("Swiftyhub")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -136,22 +131,23 @@ struct ContentView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showSettings) {
-                NavigationView {
-                    SettingsView()
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarTrailing) {
-                                Button(action: {
-                                    showSettings = false
-                                }) {
-                                    Text("Done")
-                                }
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
+        .sheet(isPresented: $showSettings) {
+            NavigationView {
+                SettingsView()
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button(action: {
+                                showSettings = false
+                            }) {
+                                Text("Done")
                             }
                         }
-                }
+                    }
             }
         }
-        .environmentObject(appState)
+        
     }
 
     private func loadInitialArticles() {
@@ -215,18 +211,12 @@ struct ContentView: View {
     private func checkForDeepLink() {
         if appState.deepLinkActive, let articleId = appState.selectedArticleId {
             if !articles.isEmpty {
-                // Find the article with the matching ID
                 if let article = articles.first(where: { $0.id == articleId }) {
                     print("Deep link found article: \(article.title)")
-                    // Navigate to the article by setting the selectedArticleId
-                    DispatchQueue.main.async {
-                        self.selectedArticleId = articleId
-                        // Reset the deep link flag to prevent repeated navigation
-                        self.appState.deepLinkActive = false
-                    }
+                    selectedArticleId = articleId
+                    appState.deepLinkActive = false
                 } else {
                     print("Deep link article not found in loaded articles, ID: \(articleId)")
-                    // The article isn't loaded yet, keep the deep link active
                 }
             } else {
                 print("Waiting for articles to load before activating deep link")

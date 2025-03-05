@@ -17,6 +17,9 @@
 		A21D4A572D78577E000142B2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21D4A4F2D78577E000142B2 /* ContentView.swift */; };
 		A21D4A5C2D7857A3000142B2 /* Canela-Regular-Trial.otf in Resources */ = {isa = PBXBuildFile; fileRef = A21D4A5B2D7857A3000142B2 /* Canela-Regular-Trial.otf */; };
 		A21D4A622D787289000142B2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21D4A612D787289000142B2 /* SettingsView.swift */; };
+		A21D4A652D787DDC000142B2 /* SwiftieChatbot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21D4A642D787DDC000142B2 /* SwiftieChatbot.swift */; };
+		A21D4A682D787EB8000142B2 /* OpenAI in Frameworks */ = {isa = PBXBuildFile; productRef = A21D4A672D787EB8000142B2 /* OpenAI */; };
+		A21D4A6C2D7886EB000142B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A21D4A6B2D7886EB000142B2 /* Assets.xcassets */; };
 		A22F05DE2D4A4EC500235C7B /* swiftyhubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22F05DD2D4A4EC500235C7B /* swiftyhubTests.swift */; };
 		A22F05E82D4A4EC500235C7B /* swiftyhubUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22F05E72D4A4EC500235C7B /* swiftyhubUITests.swift */; };
 		A22F05EA2D4A4EC500235C7B /* swiftyhubUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22F05E92D4A4EC500235C7B /* swiftyhubUITestsLaunchTests.swift */; };
@@ -49,10 +52,11 @@
 		A21D4A4E2D78577E000142B2 /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
 		A21D4A4F2D78577E000142B2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A21D4A582D785792000142B2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		A21D4A5A2D785792000142B2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A21D4A5B2D7857A3000142B2 /* Canela-Regular-Trial.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Canela-Regular-Trial.otf"; sourceTree = "<group>"; };
 		A21D4A612D787289000142B2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A21D4A632D78787D000142B2 /* swiftyhub-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "swiftyhub-Info.plist"; sourceTree = "<group>"; };
+		A21D4A642D787DDC000142B2 /* SwiftieChatbot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftieChatbot.swift; sourceTree = "<group>"; };
+		A21D4A6B2D7886EB000142B2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A22F05C92D4A4EC300235C7B /* swiftyhub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftyhub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A22F05D92D4A4EC500235C7B /* swiftyhubTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftyhubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A22F05DD2D4A4EC500235C7B /* swiftyhubTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftyhubTests.swift; sourceTree = "<group>"; };
@@ -66,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A21D4A682D787EB8000142B2 /* OpenAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,14 +102,15 @@
 		A22F05C02D4A4EC300235C7B = {
 			isa = PBXGroup;
 			children = (
+				A21D4A6B2D7886EB000142B2 /* Assets.xcassets */,
 				A21D4A632D78787D000142B2 /* swiftyhub-Info.plist */,
-				A21D4A5A2D785792000142B2 /* Assets.xcassets */,
 				A21D4A592D785792000142B2 /* Preview Content */,
 				A21D4A4B2D78577E000142B2 /* Article.swift */,
 				A21D4A4C2D78577E000142B2 /* ArticleDetailView.swift */,
 				A21D4A612D787289000142B2 /* SettingsView.swift */,
 				A21D4A4D2D78577E000142B2 /* ArticleTimestampView.swift */,
 				A21D4A4F2D78577E000142B2 /* ContentView.swift */,
+				A21D4A642D787DDC000142B2 /* SwiftieChatbot.swift */,
 				A21D4A4E2D78577E000142B2 /* DateFormatter+Extensions.swift */,
 				A21D4A492D78577E000142B2 /* NewsService.swift */,
 				A21D4A482D78577E000142B2 /* OpenAIService.swift */,
@@ -167,6 +173,9 @@
 			dependencies = (
 			);
 			name = swiftyhub;
+			packageProductDependencies = (
+				A21D4A672D787EB8000142B2 /* OpenAI */,
+			);
 			productName = swiftyhub;
 			productReference = A22F05C92D4A4EC300235C7B /* swiftyhub.app */;
 			productType = "com.apple.product-type.application";
@@ -239,6 +248,9 @@
 				Base,
 			);
 			mainGroup = A22F05C02D4A4EC300235C7B;
+			packageReferences = (
+				A21D4A662D787EB8000142B2 /* XCRemoteSwiftPackageReference "OpenAI" */,
+			);
 			productRefGroup = A22F05CA2D4A4EC300235C7B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -255,6 +267,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A21D4A6C2D7886EB000142B2 /* Assets.xcassets in Resources */,
 				A21D4A5C2D7857A3000142B2 /* Canela-Regular-Trial.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -285,6 +298,7 @@
 				A21D4A522D78577E000142B2 /* swiftyhubApp.swift in Sources */,
 				A21D4A622D787289000142B2 /* SettingsView.swift in Sources */,
 				A21D4A532D78577E000142B2 /* Article.swift in Sources */,
+				A21D4A652D787DDC000142B2 /* SwiftieChatbot.swift in Sources */,
 				A21D4A542D78577E000142B2 /* ArticleDetailView.swift in Sources */,
 				A21D4A552D78577E000142B2 /* ArticleTimestampView.swift in Sources */,
 				A21D4A562D78577E000142B2 /* DateFormatter+Extensions.swift in Sources */,
@@ -628,6 +642,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A21D4A662D787EB8000142B2 /* XCRemoteSwiftPackageReference "OpenAI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/MacPaw/OpenAI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.3.6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A21D4A672D787EB8000142B2 /* OpenAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A21D4A662D787EB8000142B2 /* XCRemoteSwiftPackageReference "OpenAI" */;
+			productName = OpenAI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A22F05C12D4A4EC300235C7B /* Project object */;
 }

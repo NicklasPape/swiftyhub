@@ -2,7 +2,7 @@ import SwiftUI
 
  
 class AppState: ObservableObject {
-    @Published var selectedArticleId: UUID?
+    @Published var selectedArticleId: UUID? = nil
     @Published var deepLinkActive: Bool = false
 }
 
@@ -34,10 +34,19 @@ struct swiftyhubApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView() 
-                .navigationViewStyle(StackNavigationViewStyle())
-                .environmentObject(appState) 
-                .onOpenURL { url in
+            TabView {
+                ContentView()
+                    .tabItem {
+                        Label("News", systemImage: "newspaper")
+                    }
+                
+                SwiftieChatbotView()
+                    .tabItem {
+                        Label("Chat", systemImage: "bubble.left.and.bubble.right")
+                    }
+            }
+            .environmentObject(appState)
+            .onOpenURL { url in
                     print("Received URL: \(url)")
                     
                     if url.host == "article", let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
