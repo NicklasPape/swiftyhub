@@ -10,6 +10,7 @@ struct ContentView: View {
     private let pageSize = 10
     private let bucketUrl = "https://xhjsundjajtfukpqpjxp.supabase.co/storage/v1/object/public/news-images/"
     @State private var appeared = false
+    @State private var showSettings = false
 
     init() {
         let navBarAppearance = UINavigationBarAppearance()
@@ -111,6 +112,30 @@ struct ContentView: View {
             }
             .navigationTitle("Swiftynews")
             .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showSettings = true
+                    }) {
+                        Image(systemName: "info.circle")
+                            .foregroundColor(.black)
+                    }
+                }
+            }
+            .sheet(isPresented: $showSettings) {
+                NavigationView {
+                    SettingsView()
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarTrailing) {
+                                Button(action: {
+                                    showSettings = false
+                                }) {
+                                    Text("Done")
+                                }
+                            }
+                        }
+                }
+            }
         }
     }
 
