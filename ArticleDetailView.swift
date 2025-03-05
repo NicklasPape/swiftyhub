@@ -56,7 +56,7 @@ public struct ArticleDetailView: View {
                             .lineSpacing(6)
                             .offset(y: appeared ? 0 : 20)
                             .opacity(appeared ? 1 : 0)
-                            .animation(.easeInOut(duration: 1).delay(0.2), value: appeared)
+                            .animation(.easeInOut(duration: 0.5).delay(0.2), value: appeared)
 
                         ArticleTimestampView(timestamp: article.created_at)
                             .font(.custom("AvenirNext-Regular", size: 14))
@@ -64,7 +64,7 @@ public struct ArticleDetailView: View {
                             .padding(.top, -8)
                             .offset(y: appeared ? 0 : 20)
                             .opacity(appeared ? 1 : 0)
-                            .animation(.easeInOut(duration: 1).delay(0.3), value: appeared)
+                            .animation(.easeInOut(duration: 0.5).delay(0.3), value: appeared)
 
                         Text(article.ai_content)
                             .font(.custom("AvenirNext-Regular", size: 18))
@@ -72,7 +72,7 @@ public struct ArticleDetailView: View {
                             .lineSpacing(4)
                             .offset(y: appeared ? 0 : 20)
                             .opacity(appeared ? 1 : 0)
-                            .animation(.easeInOut(duration: 1).delay(0.4), value: appeared)
+                            .animation(.easeInOut(duration: 0.5).delay(0.4), value: appeared)
 
                         if let url = URL(string: article.source_url) {
                             Button {
