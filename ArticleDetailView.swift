@@ -38,8 +38,7 @@ public struct ArticleDetailView: View {
                                     .frame(width: geometry.size.width)
                                     .frame(height: 460)
                                     .clipped()
-                                    .opacity(appeared ? 1 : 0.6)
-                                    .animation(.easeInOut(duration: 0.8).delay(0.1), value: appeared)
+                                    
                             } placeholder: {
                                 ProgressView()
                                     .frame(height: 460)
@@ -47,6 +46,9 @@ public struct ArticleDetailView: View {
                         }
                     }
                     .frame(height: 460)
+                    .offset(y: appeared ? 0 : 60)
+                    .opacity(appeared ? 1 : 0)
+                    .animation(.easeInOut(duration: 0.5).delay(0.2), value: appeared)
 
                     VStack(alignment: .leading, spacing: 16) {
                         Text(article.title)
@@ -58,39 +60,23 @@ public struct ArticleDetailView: View {
                             .opacity(appeared ? 1 : 0)
                             .animation(.easeInOut(duration: 0.5).delay(0.2), value: appeared)
 
-                        ArticleTimestampView(timestamp: article.created_at)
-                            .font(.custom("AvenirNext-Regular", size: 14))
-                            .foregroundColor(.gray)
-                            .padding(.top, -8)
-                            .offset(y: appeared ? 0 : 20)
-                            .opacity(appeared ? 1 : 0)
-                            .animation(.easeInOut(duration: 0.5).delay(0.3), value: appeared)
-
-                        Text(article.ai_content)
-                            .font(.custom("AvenirNext-Regular", size: 18))
-                            .fixedSize(horizontal: false, vertical: true)
-                            .lineSpacing(4)
-                            .offset(y: appeared ? 0 : 20)
-                            .opacity(appeared ? 1 : 0)
-                            .animation(.easeInOut(duration: 0.5).delay(0.4), value: appeared)
-
-                        if let url = URL(string: article.source_url) {
-                            Button {
-                                showWebView = true
-                            } label: {
-                                Text("Read more")
-                                    .font(.custom("AvenirNext-Regular", size: 16).weight(.medium))
-                                    .foregroundColor(.white)
-                                    .padding(.vertical, 10)
-                                    .padding(.horizontal, 20)
-                                    .background(Color.black)
-                                    .cornerRadius(8)
+                        ArticleTimestampView(
+                            timestamp: article.created_at,
+                            sourceURL: article.source_url,
+                            onSourceTap: {
+                                if let url = URL(string: article.source_url) {
+                                    showWebView = true
+                                }
                             }
-                            .padding(.top, 16)
-                            .offset(y: appeared ? 0 : 20)
-                            .opacity(appeared ? 1 : 0)
-                            .animation(.easeIn(duration: 1).delay(0.5), value: appeared)
-                            .sheet(isPresented: $showWebView) {
+                        )
+                        .font(.custom("AvenirNext-Regular", size: 14))
+                        .foregroundColor(.gray)
+                        .padding(.top, -8)
+                        .offset(y: appeared ? 0 : 20)
+                        .opacity(appeared ? 1 : 0)
+                        .animation(.easeInOut(duration: 0.5).delay(0.3), value: appeared)
+                        .sheet(isPresented: $showWebView) {
+                            if let url = URL(string: article.source_url) {
                                 NavigationView {
                                     SafariView(url: url)
                                         .navigationBarItems(trailing: Button("Done") {
@@ -100,6 +86,15 @@ public struct ArticleDetailView: View {
                                 .navigationViewStyle(StackNavigationViewStyle())
                             }
                         }
+
+                        Text(article.ai_content)
+                            .font(.custom("AvenirNext-Regular", size: 18))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .lineSpacing(4)
+                            .offset(y: appeared ? 0 : 20)
+                            .opacity(appeared ? 1 : 0)
+                            .animation(.easeInOut(duration: 0.5).delay(0.4), value: appeared)
+
                     }
                     .padding(.horizontal, 20)
                     .padding(.bottom, 32)

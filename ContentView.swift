@@ -41,16 +41,16 @@ struct ContentView: View {
                                                     .resizable()
                                                     .aspectRatio(contentMode: .fill)
                                                     .frame(width: 60, height: 80)
-                                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                                    .clipShape(RoundedRectangle(cornerRadius: 4))
                                                     .padding(.vertical, 4)
                                                     .padding(.horizontal,8)
                                             } placeholder: {
-                                                RoundedRectangle(cornerRadius: 8)
+                                                RoundedRectangle(cornerRadius: 4)
                                                     .fill(Color.gray.opacity(0.2))
                                                     .frame(width: 60, height: 80)
                                             }
                                         } else {
-                                            RoundedRectangle(cornerRadius: 8)
+                                            RoundedRectangle(cornerRadius: 4)
                                                 .fill(Color.gray.opacity(0.2))
                                                 .frame(width: 60, height: 80)
                                         }
@@ -59,7 +59,8 @@ struct ContentView: View {
                                             Text(article.title)
                                                 .font(.custom("CanelaTrial-Regular", size: 24))
                                                 .lineSpacing(4)
-                                                .padding(.vertical, 1)
+                                                .padding(.vertical, 2)
+                                                .padding(.top, 2)
                                             ArticleTimestampView(timestamp: article.created_at, showTime: false)
                                         }
                                     }
