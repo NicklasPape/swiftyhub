@@ -5,38 +5,63 @@ struct ContentView: View {
     @State private var isLoading = false
     private let bucketUrl = "https://xhjsundjajtfukpqpjxp.supabase.co/storage/v1/object/public/news-images/"
 
+    init() {
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.largeTitleTextAttributes = [
+            .font: UIFont(name: "CanelaTrial-Regular", size: 38)!
+        ]
+        navBarAppearance.backgroundColor = .white
+        navBarAppearance.shadowColor = .clear
+        UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
+        UINavigationBar.appearance().standardAppearance = navBarAppearance
+    }
+
     var body: some View {
         NavigationView {
             ZStack {
-                List(sortedArticles) { article in
-                    NavigationLink(destination: ArticleDetailView(article: article)) {
-                        HStack {
-                            if let imagePath = article.image_path {
-                                AsyncImage(url: URL(string: bucketUrl + imagePath)) { image in
-                                    image
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 60, height: 60)
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                                } placeholder: {
+                VStack(spacing: 0) {
+                    Rectangle()
+                        .fill(Color.clear)
+                        .frame(height: 12)
+                    
+                    List(sortedArticles) { article in
+                        NavigationLink(destination: ArticleDetailView(article: article)) {
+                            HStack(alignment: .top, spacing: 8) {
+                                if let imagePath = article.image_path {
+                                    AsyncImage(url: URL(string: bucketUrl + imagePath)) { image in
+                                        image
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 60, height: 80)
+                                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                                            .padding(.vertical, 4)
+                                            .padding(.horizontal,8)
+                                    } placeholder: {
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .fill(Color.gray.opacity(0.2))
+                                            .frame(width: 60, height: 80)
+                                    }
+                                } else {
                                     RoundedRectangle(cornerRadius: 8)
                                         .fill(Color.gray.opacity(0.2))
-                                        .frame(width: 60, height: 60)
+                                        .frame(width: 60, height: 80)
                                 }
-                            } else {
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color.gray.opacity(0.2))
-                                    .frame(width: 60, height: 60)
+                                
+                                VStack(alignment: .leading) {
+                                    Text(article.title)
+                                        .font(.custom("CanelaTrial-Regular", size: 24))
+                                        .lineSpacing(4)
+                                        .padding(.vertical, 1)
+                                    ArticleTimestampView(timestamp: article.created_at, showTime: false)
+                                }
                             }
-                            
-                            VStack(alignment: .leading) {
-                                Text(article.title)
-                                    .font(.custom("AvenirNext-DemiBold", size: 17))
-                                ArticleTimestampView(timestamp: article.created_at, showTime: false)
-                            }
+                            .padding(.vertical, 4)
                         }
-                        .padding(.vertical, 4)
+                        .buttonStyle(PlainButtonStyle())
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
                     }
+                    .listStyle(PlainListStyle())
                 }
                 
                 if isLoading {
@@ -47,6 +72,7 @@ struct ContentView: View {
                 loadArticles()
             }
             .navigationTitle("Swiftynews")
+            .navigationBarTitleDisplayMode(.large)
         }
     }
 
