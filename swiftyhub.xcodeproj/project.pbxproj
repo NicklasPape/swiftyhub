@@ -52,6 +52,7 @@
 		A21D4A5A2D785792000142B2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A21D4A5B2D7857A3000142B2 /* Canela-Regular-Trial.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Canela-Regular-Trial.otf"; sourceTree = "<group>"; };
 		A21D4A612D787289000142B2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A21D4A632D78787D000142B2 /* swiftyhub-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "swiftyhub-Info.plist"; sourceTree = "<group>"; };
 		A22F05C92D4A4EC300235C7B /* swiftyhub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = swiftyhub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A22F05D92D4A4EC500235C7B /* swiftyhubTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftyhubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A22F05DD2D4A4EC500235C7B /* swiftyhubTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftyhubTests.swift; sourceTree = "<group>"; };
@@ -96,6 +97,7 @@
 		A22F05C02D4A4EC300235C7B = {
 			isa = PBXGroup;
 			children = (
+				A21D4A632D78787D000142B2 /* swiftyhub-Info.plist */,
 				A21D4A5A2D785792000142B2 /* Assets.xcassets */,
 				A21D4A592D785792000142B2 /* Preview Content */,
 				A21D4A4B2D78577E000142B2 /* Article.swift */,
@@ -453,6 +455,7 @@
 				DEVELOPMENT_TEAM = H8UC47S7NP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "swiftyhub-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -486,6 +489,7 @@
 				DEVELOPMENT_TEAM = H8UC47S7NP;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "swiftyhub-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

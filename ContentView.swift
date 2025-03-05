@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var appState: AppState
     @State private var articles: [Article] = []
     @State private var isLoading = true
     @State private var isLoadingMore = false
@@ -11,6 +12,7 @@ struct ContentView: View {
     private let bucketUrl = "https://xhjsundjajtfukpqpjxp.supabase.co/storage/v1/object/public/news-images/"
     @State private var appeared = false
     @State private var showSettings = false
+    @State private var selectedArticleId: UUID? = nil
 
     init() {
         let navBarAppearance = UINavigationBarAppearance()
@@ -34,7 +36,12 @@ struct ContentView: View {
                     if isContentReady {
                         List {
                             ForEach(Array(sortedArticles.enumerated()), id: \.element.id) { index, article in
-                                NavigationLink(destination: ArticleDetailView(article: article)) {
+                                NavigationLink(isActive: Binding(
+                                    get: { selectedArticleId == article.id },
+                                    set: { if $0 { selectedArticleId = article.id } else { selectedArticleId = nil } }
+                                )) {
+                                    ArticleDetailView(article: article)
+                                } label: {
                                     HStack(alignment: .top, spacing: 8) {
                                         if let imagePath = article.image_path {
                                             AsyncImage(url: URL(string: bucketUrl + imagePath)) { image in
@@ -109,6 +116,13 @@ struct ContentView: View {
                 if articles.isEmpty {
                     loadInitialArticles()
                 }
+                
+                checkForDeepLink()
+            }
+            .onChange(of: appState.deepLinkActive) { _, newValue in
+                if newValue {
+                    checkForDeepLink()
+                }
             }
             .navigationTitle("Swiftynews")
             .navigationBarTitleDisplayMode(.large)
@@ -137,6 +151,7 @@ struct ContentView: View {
                 }
             }
         }
+        .environmentObject(appState)
     }
 
     private func loadInitialArticles() {
@@ -195,5 +210,27 @@ struct ContentView: View {
 
     var sortedArticles: [Article] {
         return articles.sorted { $0.created_at > $1.created_at }
+    }
+
+    private func checkForDeepLink() {
+        if appState.deepLinkActive, let articleId = appState.selectedArticleId {
+            if !articles.isEmpty {
+                // Find the article with the matching ID
+                if let article = articles.first(where: { $0.id == articleId }) {
+                    print("Deep link found article: \(article.title)")
+                    // Navigate to the article by setting the selectedArticleId
+                    DispatchQueue.main.async {
+                        self.selectedArticleId = articleId
+                        // Reset the deep link flag to prevent repeated navigation
+                        self.appState.deepLinkActive = false
+                    }
+                } else {
+                    print("Deep link article not found in loaded articles, ID: \(articleId)")
+                    // The article isn't loaded yet, keep the deep link active
+                }
+            } else {
+                print("Waiting for articles to load before activating deep link")
+            }
+        }
     }
 }

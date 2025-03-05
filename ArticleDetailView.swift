@@ -20,6 +20,7 @@ public struct ArticleDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showWebView = false
     @State private var appeared = false
+    @State private var showShareSheet = false
 
     public init(article: Article) {
         self.article = article
@@ -94,11 +95,36 @@ public struct ArticleDetailView: View {
                             .offset(y: appeared ? 0 : 20)
                             .opacity(appeared ? 1 : 0)
                             .animation(.easeInOut(duration: 0.5).delay(0.4), value: appeared)
-
+                        
+                        Button(action: {
+                            showShareSheet = true
+                        }) {
+                            HStack {
+                                Image(systemName: "square.and.arrow.up")
+                                Text("Share article")
+                                    .font(.custom("AvenirNext-Medium", size: 16))
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.black)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                        }
+                        .padding(.top, 20)
+                        .offset(y: appeared ? 0 : 20)
+                        .opacity(appeared ? 1 : 0)
+                        .animation(.easeInOut(duration: 0.5).delay(0.5), value: appeared)
                     }
                     .padding(.horizontal, 20)
                     .padding(.bottom, 32)
                     
+                }
+                .sheet(isPresented: $showShareSheet) {
+                    let appLink = "swiftyhub://article/\(article.id.uuidString)"
+                    
+                    let shareText = "\(article.title)\n\n\(String(article.ai_content.prefix(100)))...\n\nRead in SwiftyHub: \(appLink)"
+                    
+                    ActivityViewController(activityItems: [shareText])
                 }
             }
             .edgesIgnoringSafeArea(.top)
@@ -122,4 +148,19 @@ public struct ArticleDetailView: View {
             appeared = false
         }
     }
+}
+
+struct ActivityViewController: UIViewControllerRepresentable {
+    var activityItems: [Any]
+    var applicationActivities: [UIActivity]? = nil
+    
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        let controller = UIActivityViewController(
+            activityItems: activityItems,
+            applicationActivities: applicationActivities
+        )
+        return controller
+    }
+    
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
