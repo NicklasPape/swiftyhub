@@ -20,10 +20,6 @@ struct ContentView: View {
         NavigationView {
             ZStack {
                 VStack(spacing: 0) {
-                    Rectangle()
-                        .fill(Color.clear)
-                        .frame(height: 12)
-                    
                     List(sortedArticles) { article in
                         NavigationLink(destination: ArticleDetailView(article: article)) {
                             HStack(alignment: .top, spacing: 8) {
@@ -33,29 +29,25 @@ struct ContentView: View {
                                             .resizable()
                                             .aspectRatio(contentMode: .fill)
                                             .frame(width: 60, height: 80)
-                                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                                            .clipShape(RoundedRectangle(cornerRadius: 4))
                                             .padding(.vertical, 4)
                                             .padding(.horizontal,8)
                                     } placeholder: {
-                                        RoundedRectangle(cornerRadius: 8)
+                                        RoundedRectangle(cornerRadius: 4)
                                             .fill(Color.gray.opacity(0.2))
                                             .frame(width: 60, height: 80)
                                     }
-                                } else {
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .fill(Color.gray.opacity(0.2))
-                                        .frame(width: 60, height: 80)
                                 }
                                 
                                 VStack(alignment: .leading) {
                                     Text(article.title)
-                                        .font(.custom("CanelaTrial-Regular", size: 24))
-                                        .lineSpacing(4)
-                                        .padding(.vertical, 1)
+                                        .font(.custom("CanelaTrial-Regular", size: 20))
+                                        .lineSpacing(6)
+                                        .padding(.vertical, 2)
+                                        .padding(.top, 4)
                                     ArticleTimestampView(timestamp: article.created_at, showTime: false)
                                 }
                             }
-                            .padding(.vertical, 4)
                         }
                         .buttonStyle(PlainButtonStyle())
                         .listRowBackground(Color.clear)

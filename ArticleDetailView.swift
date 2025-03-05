@@ -35,15 +35,15 @@ public struct ArticleDetailView: View {
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: geometry.size.width)
-                                    .frame(height: 300)
+                                    .frame(height: 460)
                                     .clipped()
                             } placeholder: {
                                 ProgressView()
-                                    .frame(height: 300)
+                                    .frame(height: 460)
                             }
                         }
                     }
-                    .frame(height: 300)
+                    .frame(height: 460)
 
                     VStack(alignment: .leading, spacing: 16) {
                         Text(article.title)
