@@ -11,6 +11,6 @@ jobs:
     steps:
       - name: Call Supabase Function
         run: |
-          curl -X POST "https://https://xhjsundjajtfukpqpjxp.supabase.co/functions/v1/fetch_news" \
+          curl -X POST "https://xhjsundjajtfukpqpjxp.supabase.co/functions/v1/fetch_news" \
                -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" \
                -H "Content-Type: application/json"
