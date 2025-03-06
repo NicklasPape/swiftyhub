@@ -19,8 +19,12 @@ struct ContentView: View {
         navBarAppearance.largeTitleTextAttributes = [
             .font: UIFont(name: "CanelaTrial-Regular", size: 38)!
         ]
-        navBarAppearance.backgroundColor = .white
+        navBarAppearance.configureWithOpaqueBackground()
         navBarAppearance.shadowColor = .clear
+        
+        navBarAppearance.backgroundColor = UIColor.systemBackground
+        navBarAppearance.largeTitleTextAttributes[.foregroundColor] = UIColor.label
+        
         UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
         UINavigationBar.appearance().standardAppearance = navBarAppearance
     }
@@ -127,7 +131,7 @@ struct ContentView: View {
                         showSettings = true
                     }) {
                         Image(systemName: "info.circle")
-                            .foregroundColor(.black)
+                            .foregroundColor(Color(UIColor.label))
                     }
                 }
             }
