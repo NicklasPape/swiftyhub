@@ -60,7 +60,7 @@ struct ContentView: View {
                                         
                                         VStack(alignment: .leading) {
                                             Text(article.title)
-                                                .font(.custom("CanelaTrial-Regular", size: 24))
+                                                .font(.custom("CanelaTrial-Regular", size: 18))
                                                 .lineSpacing(4)
                                                 .padding(.vertical, 2)
                                                 .padding(.top, 2)

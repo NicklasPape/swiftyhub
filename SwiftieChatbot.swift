@@ -96,7 +96,7 @@ struct SwiftieChatbotView: View {
 
 // MARK: - Swiftie Chat Service
 class SwiftieChatService {
-    private let apiKey = "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"
+    private let apiKey = "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"
     
     func getChatResponse(for userInput: String, completion: @escaping (String) -> Void) {
         let endpoint = "https://api.openai.com/v1/chat/completions"
