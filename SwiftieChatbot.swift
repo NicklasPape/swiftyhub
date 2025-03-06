@@ -29,62 +29,113 @@ struct SwiftieChatbotView: View {
     @State private var hasShownIntroMessages = false
     
     var body: some View {
-        VStack(spacing: 0) {
-            ScrollViewReader { scrollProxy in
-                ScrollView {
-                    LazyVStack(alignment: .leading, spacing: 12) {
-                        ForEach(messages, id: \.id) { message in
-                            ChatBubble(message: message)
-                                .id(message.id)
-                        }
-                        
-                        if isTyping {
-                            HStack {
-                                Text("Taylor is typing...")
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
-                                    .padding(.leading)
-                                Spacer()
+        NavigationStack {
+            VStack(spacing: 0) {
+                ScrollViewReader { scrollProxy in
+                    ScrollView {
+                        LazyVStack(alignment: .leading, spacing: 12) {
+                            ForEach(messages.indices, id: \.self) { index in
+                                let message = messages[index]
+                                ChatBubble(message: message, shouldShowAvatar: shouldShowAvatar(for: index))
+                                    .id(message.id)
                             }
-                            .id("typingIndicator")
+                            
+                            if isTyping {
+                                HStack {
+                                    Text("Taylor is typing...")
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                        .padding(.leading)
+                                    Spacer()
+                                }
+                                .id("typingIndicator")
+                            }
+                        }
+                        .padding()
+                    }
+                    .onChange(of: messages.count) { _, _ in
+                        if let lastMessage = messages.last {
+                            withAnimation {
+                                scrollProxy.scrollTo(lastMessage.id, anchor: .bottom)
+                            }
                         }
                     }
-                    .padding()
-                }
-                .onChange(of: messages.count) { _, _ in
-                    if let lastMessage = messages.last {
-                        withAnimation {
-                            scrollProxy.scrollTo(lastMessage.id, anchor: .bottom)
+                    .onChange(of: isTyping) { _, _ in
+                        if isTyping {
+                            withAnimation {
+                                scrollProxy.scrollTo("typingIndicator", anchor: .bottom)
+                            }
                         }
                     }
                 }
-                .onChange(of: isTyping) { _, _ in
-                    if isTyping {
-                        withAnimation {
-                            scrollProxy.scrollTo("typingIndicator", anchor: .bottom)
-                        }
+                
+                HStack {
+                    TextField("Message", text: $userInput)
+                        .padding(10)
+                        .background(Color(UIColor.systemGray6))
+                        .cornerRadius(20)
+                        .padding(.horizontal)
+                        .padding(.vertical)
+
+                    
+                    Button(action: sendMessage) {
+                        Image(systemName: "paperplane.fill")
+                            .foregroundColor(.blue)
+                            .padding(10)
+                            .background(Color.blue.opacity(0.1))
+                            .clipShape(Circle())
+                            .padding(.trailing)
+                    }
+                    .disabled(isTyping)
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    HStack(spacing: 8) {
+                        Image("taylor_swift")
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 30, height: 30)
+                            .clipShape(Circle())
+                        
+                        Text("Taylor Swift")
+                            .font(.headline)
                     }
                 }
             }
-            
-            HStack {
-                TextField("Ask me anything...", text: $userInput)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                
-                Button(action: sendMessage) {
-                    Image(systemName: "paperplane.fill")
-                        .foregroundColor(.blue)
-                        .padding()
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                if !hasShownIntroMessages {
+                    showIntroMessages()
                 }
-                .disabled(isTyping)
             }
         }
-        .navigationTitle("Chat with Taylor 🎶")
-        .onAppear {
-            if !hasShownIntroMessages {
-                showIntroMessages()
-            }
+    }
+    
+    func shouldShowAvatar(for index: Int) -> Bool {
+        // Get the current message
+        let currentMessage = messages[index]
+        
+        // No avatar for user messages
+        if currentMessage.isUser {
+            return false
+        }
+        
+        // If this is the last message in the list, show avatar
+        if index == messages.count - 1 {
+            return true
+        }
+        
+        // Get the next message
+        let nextMessage = messages[index + 1]
+        
+        // If the current message is from Taylor and the next one is from the user
+        // or if the next message is from Taylor but the current one is the last in a sequence,
+        // show the avatar
+        if !nextMessage.isUser {
+            return false // Not the last message in a sequence
+        } else {
+            return true // This is the last Taylor message before a user message
         }
     }
     
@@ -208,29 +259,45 @@ struct ChatMessage: Identifiable {
 
 struct ChatBubble: View {
     let message: ChatMessage
+    let shouldShowAvatar: Bool
     
     var body: some View {
-        HStack(alignment: .top, spacing: 8) {
+        HStack(alignment: .bottom, spacing: 8) {
             if !message.isUser {
-                Image("taylor_swift")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
-                    .background(Circle().fill(Color(UIColor.systemBackground)))
-                    .padding(.top, 4)
+                // Taylor's message - show avatar or placeholder with fixed width
+                if shouldShowAvatar {
+                    Image("taylor_swift")
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 32, height: 32)
+                        .clipShape(Circle())
+                        .background(Circle().fill(Color(UIColor.systemBackground)))
+                } else {
+                    // Empty space with fixed width to align all Taylor messages
+                    Spacer()
+                        .frame(width: 40)
+                }
+                
+                // Text bubble for Taylor's messages - no spacers around it
+                Text(message.text)
+                    .padding()
+                    .background(Color(UIColor.systemGray5))
+                    .cornerRadius(12)
+                    .foregroundColor(Color(UIColor.label))
+                    .frame(maxWidth: 210, alignment: .leading)
+                
+                Spacer() // Push Taylor's messages to the left
+            } else {
+                // User message - pushed to the right
+                Spacer() // Push user messages to the right
+                
+                Text(message.text)
+                    .padding()
+                    .background(Color.blue.opacity(0.7))
+                    .cornerRadius(12)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: 250, alignment: .trailing)
             }
-            
-            if message.isUser { Spacer() }
-            Text(message.text)
-                .padding()
-                .background(message.isUser ?
-                           Color.blue.opacity(0.7) :
-                           Color(UIColor.systemGray5))
-                .cornerRadius(12)
-                .foregroundColor(message.isUser ? .white : Color(UIColor.label))
-                .frame(maxWidth: message.isUser ? 250 : 210, alignment: message.isUser ? .trailing : .leading)
-            if !message.isUser { Spacer() }
         }
         .padding(.horizontal, 4)
     }

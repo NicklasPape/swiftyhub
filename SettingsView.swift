@@ -12,12 +12,12 @@ struct SettingsView: View {
         VStack(spacing: 20) {
             Spacer()
             
-            Text("SwiftyNews is your go-to source for daily Taylor Swift news.")
+            Text("SwiftyNews is your go-to source for your daily Taylor Swift dose.")
                 .font(.custom("CanelaTrial-Regular", size: 34))
                 .lineSpacing(4)
 
 
-            Text("Every article is AI-generated based on real news sources, designed to be engaging and fun—while staying true to the facts. We’re always improving and would love your feedback, Swifties!")
+            Text("Every article is AI-generated based on real news sources, designed to be engaging and fun—while staying true to the facts. When not reading news, ask Taylor about anything. We’re always improving and would love your feedback, Swifties!")
                 .font(.body)
             
             Spacer()
