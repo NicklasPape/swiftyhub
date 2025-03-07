@@ -8,24 +8,7 @@ struct SwiftieChatbotView: View {
     
     let chatService = SwiftieChatService()
     
-    let introMessages = [
-        "Hey there, Swiftie! 👋",
-        "I'm so excited to chat with you about my music, albums, or just about anything! 🎤✨"
-    ]
-    
-    let questionMessages = [
-        "What's your favorite album of mine? I'd love to know! 💿",
-        "Have you listened to The Tortured Poets Department yet? What did you think? 📝",
-        "Are you coming to any of my upcoming tour dates? I'd love to see you there! 🎫",
-        "Which era is your favorite? I'm always curious what resonates with different Swifties! ✨",
-        "What's your favorite song of mine? I've written so many, it's hard to keep track! 🎵",
-        "Did you catch any of my Easter eggs in my recent music videos? I love hiding little clues! 🥚",
-        "If you could hear me re-record any song next, which one would you choose? 🎙️",
-        "Are you more of a folklore or evermore person? The eternal debate! 🌲",
-        "What's one question you've always wanted to ask me? I'm an open book today! 📖",
-        "If we could hang out for a day, what would you want to do? I'm thinking cats and baking! 🐱🧁"
-    ]
-    
+    // Intro messages are now handled by the backend endpoint
     @State private var hasShownIntroMessages = false
     
     var body: some View {
@@ -145,17 +128,19 @@ struct SwiftieChatbotView: View {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             isTyping = false
-            messages.append(ChatMessage(text: self.introMessages[0], isUser: false))
+            var firstMessage = ChatMessage(text: "Hello, Swiftie!", isUser: false)
+            firstMessage.imageName = "taylor_selfie"
+            messages.append(firstMessage)
             
             isTyping = true
             
             DispatchQueue.main.asyncAfter(deadline: .now() + Double.random(in: 1.5...2.5)) {
                 isTyping = false
-                messages.append(ChatMessage(text: self.introMessages[1], isUser: false))
+                messages.append(ChatMessage(text: "I'm so excited to chat with you!", isUser: false))
                 
                 isTyping = true
                 
-                let randomQuestion = self.questionMessages.randomElement() ?? "What would you like to talk about today?"
+                let randomQuestion = "What would you like to talk about today?"
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + Double.random(in: 2.0...3.0)) {
                     isTyping = false
@@ -187,74 +172,66 @@ struct SwiftieChatbotView: View {
 }
 
 class SwiftieChatService {
-    private let apiKey = "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"
-    
     func getChatResponse(for userInput: String, completion: @escaping (String) -> Void) {
-        let endpoint = "https://api.openai.com/v1/chat/completions"
+        sendMessageToTaylorSwift(userMessage: userInput) { response in
+            if let response = response {
+                completion(response)
+            } else {
+                completion("Oops! Something went wrong. Try again, Swiftie! ")
+            }
+        }
+    }
+    
+    private func sendMessageToTaylorSwift(userMessage: String, completion: @escaping (String?) -> Void) {
+        // URL for the Supabase Edge Function endpoint
+        guard let url = URL(string: "https://xhjsundjajtfukpqpjxp.supabase.co/functions/v1/chat_taylor") else {
+            completion(nil)
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let requestBody: [String: Any] = [
-            "model": "gpt-4",
-            "messages": [
-                ["role": "system", "content": "You are Taylor Swift. Answer questions about your music, career, and life with fun Swiftie references. Keep answers short like you would normally in a chat interface. Ask the user questions to make them feel connected and seen"],
-                ["role": "user", "content": userInput]
-            ],
-            "max_tokens": 300
-        ]
+        // Updated request body to match the expected format in the new index file
+        // Changed from "userMessage" to "message" to match the endpoint
+        let requestBody: [String: Any] = ["message": userMessage]
         
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: requestBody) else {
-            completion("Oops! Something went wrong. Try again, Swiftie! 🎶")
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: requestBody) else {
+            completion(nil)
             return
         }
         
-        var request = URLRequest(url: URL(string: endpoint)!)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
-        request.httpBody = jsonData
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        request.httpBody = httpBody
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
                 DispatchQueue.main.async {
-                    completion("I can't answer that right now, but keep shining! ✨")
+                    completion(nil)
                 }
                 return
             }
-            
-            if let decodedResponse = try? JSONDecoder().decode(OpenAIResponse.self, from: data) {
+
+            if let jsonResponse = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let reply = jsonResponse["reply"] as? String {
                 DispatchQueue.main.async {
-                    if let reply = decodedResponse.choices.first?.message.content {
-                        completion(reply)
-                    } else {
-                        completion("Oops! Something went wrong. Try again, Swiftie! 🎶")
-                    }
+                    completion(reply)
                 }
             } else {
                 DispatchQueue.main.async {
-                    completion("I can't answer that right now, but keep shining! ✨")
+                    completion(nil)
                 }
             }
-        }
-        
-        task.resume()
-    }
-    
-    struct OpenAIResponse: Codable {
-        let choices: [Choice]
-    }
-    
-    struct Choice: Codable {
-        let message: Message
-    }
-    
-    struct Message: Codable {
-        let content: String
+        }.resume()
     }
 }
 
+// The following structures remain unchanged
 struct ChatMessage: Identifiable {
     let id = UUID()
     let text: String
     let isUser: Bool
+    var imageName: String? = nil
 }
 
 struct ChatBubble: View {
@@ -278,13 +255,24 @@ struct ChatBubble: View {
                         .frame(width: 40)
                 }
                 
-                // Text bubble for Taylor's messages - no spacers around it
-                Text(message.text)
-                    .padding()
-                    .background(Color(UIColor.systemGray5))
-                    .cornerRadius(12)
-                    .foregroundColor(Color(UIColor.label))
-                    .frame(maxWidth: 210, alignment: .leading)
+                // Check if there's an image - if so, just show the image without the text and grey box
+                if let imageName = message.imageName {
+                    Image(imageName)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 180)
+                        .frame(maxWidth: 210)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .frame(maxWidth: 210, alignment: .leading)
+                } else {
+                    // Text bubble for Taylor's messages without images
+                    Text(message.text)
+                        .padding()
+                        .background(Color(UIColor.systemGray5))
+                        .cornerRadius(12)
+                        .foregroundColor(Color(UIColor.label))
+                        .frame(maxWidth: 210, alignment: .leading)
+                }
                 
                 Spacer() // Push Taylor's messages to the left
             } else {
