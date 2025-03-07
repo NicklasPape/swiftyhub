@@ -45,6 +45,7 @@ struct swiftyhubApp: App {
                         Label("Chat", systemImage: "bubble.left.and.bubble.right")
                     }
             }
+            .accentColor(Color("LipstickRed"))
             .environmentObject(appState)
             .onOpenURL { url in
                     print("Received URL: \(url)")

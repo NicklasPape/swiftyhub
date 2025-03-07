@@ -1,10 +1,12 @@
 import SwiftUI
 import Foundation
+import UIKit
 
 struct SwiftieChatbotView: View {
     @State private var userInput: String = ""
     @State private var messages: [ChatMessage] = []
     @State private var isTyping = false
+    @State private var isKeyboardVisible = false
     
     let chatService = SwiftieChatService()
     
@@ -35,6 +37,10 @@ struct SwiftieChatbotView: View {
                             }
                         }
                         .padding()
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            dismissKeyboard()
+                        }
                     }
                     .onChange(of: messages.count) { _, _ in
                         if let lastMessage = messages.last {
@@ -53,24 +59,48 @@ struct SwiftieChatbotView: View {
                 }
                 
                 HStack {
-                    TextField("Message", text: $userInput)
-                        .padding(10)
-                        .background(Color(UIColor.systemGray6))
-                        .cornerRadius(20)
-                        .padding(.horizontal)
-                        .padding(.vertical)
-
-                    
-                    Button(action: sendMessage) {
-                        Image(systemName: "paperplane.fill")
-                            .foregroundColor(.blue)
+                    ZStack(alignment: .leading) {
+                        if userInput.isEmpty {
+                            Text("Message")
+                                .foregroundColor(Color("LipstickRed").opacity(0.5))
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 10)
+                        }
+                        TextField("", text: $userInput)
+                            .foregroundColor(Color("LipstickRed"))
                             .padding(10)
-                            .background(Color.blue.opacity(0.1))
-                            .clipShape(Circle())
-                            .padding(.trailing)
+                            .background(Color("LipstickRed").opacity(0.1))
+                            .cornerRadius(20)
+                            .accentColor(Color("LipstickRed"))
                     }
-                    .disabled(isTyping)
+                    .padding(.horizontal)
+                    .padding(.vertical)
+                    
+                    if userInput.isEmpty && isKeyboardVisible {
+                        Button(action: dismissKeyboard) {
+                            Image(systemName: "arrow.down")
+                                .foregroundColor(Color("LipstickRed"))
+                                .padding(10)
+                                .background(Color("LipstickRed").opacity(0.1))
+                                .clipShape(Circle())
+                                .padding(.trailing)
+                        }
+                        .transition(.scale(scale: 0, anchor: .trailing).combined(with: .opacity))
+                    } else if !userInput.isEmpty {
+                        Button(action: sendMessage) {
+                            Image(systemName: "paperplane.fill")
+                                .foregroundColor(Color("LipstickRed"))
+                                .padding(10)
+                                .background(Color("LipstickRed").opacity(0.1))
+                                .clipShape(Circle())
+                                .padding(.trailing)
+                        }
+                        .disabled(isTyping)
+                        .transition(.scale(scale: 0, anchor: .trailing).combined(with: .opacity))
+                    }
                 }
+                .animation(.easeInOut(duration: 0.2), value: userInput.isEmpty)
+                .animation(.easeInOut(duration: 0.2), value: isKeyboardVisible)
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -91,6 +121,20 @@ struct SwiftieChatbotView: View {
                 if !hasShownIntroMessages {
                     showIntroMessages()
                 }
+                
+                // Set up keyboard notifications
+                NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
+                    isKeyboardVisible = true
+                }
+                
+                NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
+                    isKeyboardVisible = false
+                }
+            }
+            .onDisappear {
+                // Remove observers when view disappears
+                NotificationCenter.default.removeObserver(UIResponder.keyboardWillShowNotification)
+                NotificationCenter.default.removeObserver(UIResponder.keyboardWillHideNotification)
             }
         }
     }
@@ -169,6 +213,10 @@ struct SwiftieChatbotView: View {
         
         userInput = ""
     }
+    
+    func dismissKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
 }
 
 class SwiftieChatService {
@@ -226,7 +274,6 @@ class SwiftieChatService {
     }
 }
 
-// The following structures remain unchanged
 struct ChatMessage: Identifiable {
     let id = UUID()
     let text: String
@@ -237,6 +284,8 @@ struct ChatMessage: Identifiable {
 struct ChatBubble: View {
     let message: ChatMessage
     let shouldShowAvatar: Bool
+    @State private var opacity: Double = 0
+    @State private var yOffset: CGFloat = 4
     
     var body: some View {
         HStack(alignment: .bottom, spacing: 8) {
@@ -252,7 +301,7 @@ struct ChatBubble: View {
                 } else {
                     // Empty space with fixed width to align all Taylor messages
                     Spacer()
-                        .frame(width: 40)
+                        .frame(width: 34)
                 }
                 
                 // Check if there's an image - if so, just show the image without the text and grey box
@@ -281,12 +330,20 @@ struct ChatBubble: View {
                 
                 Text(message.text)
                     .padding()
-                    .background(Color.blue.opacity(0.7))
+                    .background(Color("LipstickRed").opacity(0.7))
                     .cornerRadius(12)
                     .foregroundColor(.white)
                     .frame(maxWidth: 250, alignment: .trailing)
             }
         }
         .padding(.horizontal, 4)
+        .opacity(opacity)
+        .offset(y: yOffset)
+        .onAppear {
+            withAnimation(.easeInOut(duration: 0.5)) {
+                opacity = 1
+                yOffset = 0
+            }
+        }
     }
 }

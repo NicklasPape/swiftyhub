@@ -100,15 +100,13 @@ public struct ArticleDetailView: View {
                             showShareSheet = true
                         }) {
                             HStack {
-                                Image(systemName: "square.and.arrow.up")
                                 Text("Share article")
-                                    .font(.custom("AvenirNext-Medium", size: 16))
+                                Image(systemName: "square.and.arrow.up")
                             }
-                            .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.black)
+                            .background(Color("LipstickRed"))
                             .foregroundColor(.white)
-                            .cornerRadius(8)
+                            .cornerRadius(10)
                         }
                         .padding(.top, 20)
                         .offset(y: appeared ? 0 : 20)
