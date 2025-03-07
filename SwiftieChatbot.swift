@@ -26,14 +26,14 @@ struct SwiftieChatbotView: View {
                             }
                             
                             if isTyping {
-                                HStack {
-                                    Text("Taylor is typing...")
-                                        .font(.caption)
-                                        .foregroundColor(.gray)
-                                        .padding(.leading)
-                                    Spacer()
+                                // If we have no messages yet (intro case), use the indented version
+                                if messages.isEmpty {
+                                    TypingIndicatorView()
+                                        .id("typingIndicator")
+                                } else {
+                                    TypingIndicatorView()
+                                        .id("typingIndicator")
                                 }
-                                .id("typingIndicator")
                             }
                         }
                         .padding()
@@ -61,8 +61,9 @@ struct SwiftieChatbotView: View {
                 HStack {
                     ZStack(alignment: .leading) {
                         if userInput.isEmpty {
-                            Text("Message")
+                            Text("Chat with Taylor...")
                                 .foregroundColor(Color("LipstickRed").opacity(0.5))
+                                .font(.custom("AvenirNext-Regular", size: 16))
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 10)
                         }
@@ -274,6 +275,88 @@ class SwiftieChatService {
     }
 }
 
+struct TypingIndicatorView: View {
+    var body: some View {
+        HStack(alignment: .bottom, spacing: 8) {
+            Image("taylor_swift")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 32, height: 32)
+                .clipShape(Circle())
+                .background(Circle().fill(Color(UIColor.systemBackground)))
+            
+            HStack(spacing: 0) {
+                // Only animate the dots
+                BouncingDotsView()
+                Text(" Taylor is typing")
+                    .font(.custom("AvenirNext-Regular", size: 14))
+                    .foregroundColor(.gray)
+                
+                
+            }
+            .padding(.vertical, 4)
+            
+            Spacer()
+        }
+        .padding(.horizontal, 4)
+    }
+}
+
+struct BouncingDotsView: View {
+    // Animation properties
+    @State private var dot1Animation = false
+    @State private var dot2Animation = false
+    @State private var dot3Animation = false
+    
+    private let dotSize: CGFloat = 2
+    private let dotColor = Color.gray
+    
+    var body: some View {
+        HStack(spacing: 2) {
+            // First dot
+            Circle()
+                .fill(dotColor)
+                .frame(width: dotSize, height: dotSize)
+                .offset(y: dot1Animation ? -4 : 0)
+                .animation(
+                    Animation.easeInOut(duration: 0.4)
+                        .repeatForever(autoreverses: true),
+                    value: dot1Animation
+                )
+            
+            // Second dot
+            Circle()
+                .fill(dotColor)
+                .frame(width: dotSize, height: dotSize)
+                .offset(y: dot2Animation ? -4 : 0)
+                .animation(
+                    Animation.easeInOut(duration: 0.4)
+                        .repeatForever(autoreverses: true)
+                        .delay(0.15),
+                    value: dot2Animation
+                )
+            
+            // Third dot
+            Circle()
+                .fill(dotColor)
+                .frame(width: dotSize, height: dotSize)
+                .offset(y: dot3Animation ? -4 : 0)
+                .animation(
+                    Animation.easeInOut(duration: 0.4)
+                        .repeatForever(autoreverses: true)
+                        .delay(0.3),
+                    value: dot3Animation
+                )
+        }
+        .onAppear {
+            // Trigger all animations immediately but their delays will stagger them
+            dot1Animation = true
+            dot2Animation = true
+            dot3Animation = true
+        }
+    }
+}
+
 struct ChatMessage: Identifiable {
     let id = UUID()
     let text: String
@@ -301,7 +384,7 @@ struct ChatBubble: View {
                 } else {
                     // Empty space with fixed width to align all Taylor messages
                     Spacer()
-                        .frame(width: 34)
+                        .frame(width: 32)
                 }
                 
                 // Check if there's an image - if so, just show the image without the text and grey box
@@ -316,6 +399,7 @@ struct ChatBubble: View {
                 } else {
                     // Text bubble for Taylor's messages without images
                     Text(message.text)
+                        .font(.custom("AvenirNext-Regular", size: 16))
                         .padding()
                         .background(Color(UIColor.systemGray5))
                         .cornerRadius(12)
@@ -329,6 +413,7 @@ struct ChatBubble: View {
                 Spacer() // Push user messages to the right
                 
                 Text(message.text)
+                    .font(.custom("AvenirNext-Regular", size: 16))
                     .padding()
                     .background(Color("LipstickRed").opacity(0.7))
                     .cornerRadius(12)
