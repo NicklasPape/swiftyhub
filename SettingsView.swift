@@ -13,7 +13,7 @@ struct SettingsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             Spacer()
-            Text("Swiftyhub is your go-to source for your daily Taylor Swift dose.")
+            Text("Swiftyhub is your go-to source for a daily Taylor Swift dose")
                 .font(.custom("CanelaTrial-Regular", size: 34))
                 .lineSpacing(4)
                 .offset(y: appeared ? 0 : 20)
@@ -28,6 +28,19 @@ struct SettingsView: View {
                 .animation(.easeInOut(duration: 0.5).delay(0.3), value: appeared)
             
             Spacer()
+            
+            Spacer()
+            
+            // Add disclaimer text above the version number
+            Text("Swiftyhub is an aggregation of publicly available information and is committed to accuracy, but is not responsible for inaccurate notifications. Swiftyhub has no affiliation, association, endorsement, or connection with Taylor Swift.")
+                .font(.caption2)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+                .padding(.bottom, 8)
+                .offset(y: appeared ? 0 : 10)
+                .opacity(appeared ? 1 : 0)
+                .animation(.easeInOut(duration: 0.5).delay(0.4), value: appeared)
             
             HStack {
                 Spacer()

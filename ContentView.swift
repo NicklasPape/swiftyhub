@@ -10,9 +10,10 @@ struct ContentView: View {
     @State private var hasMoreContent = true
     private let pageSize = 10
     private let bucketUrl = "https://xhjsundjajtfukpqpjxp.supabase.co/storage/v1/object/public/news-images/"
-    @State private var appeared = false
     @State private var showSettings = false
     @State private var selectedArticleId: UUID? = nil
+    @State private var isRefreshing = false
+    @State private var animateList = false
 
     init() {
         let navBarAppearance = UINavigationBarAppearance()
@@ -31,84 +32,111 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            ZStack {
-                VStack(spacing: 0) {
-                    Rectangle()
-                        .fill(Color.clear)
-                        .frame(height: 12)
-                    
-                    if isContentReady {
-                        List {
-                            ForEach(Array(sortedArticles.enumerated()), id: \.element.id) { index, article in
-                                NavigationLink(destination: ArticleDetailView(article: article)) {
-                                    HStack(alignment: .top, spacing: 8) {
-                                        if let imagePath = article.image_path {
-                                            AsyncImage(url: URL(string: bucketUrl + imagePath)) { image in
+            VStack(spacing: 0) {
+                Rectangle()
+                    .fill(Color.clear)
+                    .frame(height: 12)
+                
+                if isContentReady {
+                    List {
+                        ForEach(Array(sortedArticles.enumerated()), id: \.element.id) { index, article in
+                            NavigationLink(destination: ArticleDetailView(article: article)) {
+                                HStack(alignment: .top, spacing: 8) {
+                                    if let imagePath = article.image_path {
+                                        AsyncImage(url: URL(string: bucketUrl + imagePath)) { phase in
+                                            if let image = phase.image {
                                                 image
                                                     .resizable()
                                                     .aspectRatio(contentMode: .fill)
                                                     .frame(width: 60, height: 80)
                                                     .clipShape(RoundedRectangle(cornerRadius: 4))
                                                     .padding(.vertical, 4)
-                                                    .padding(.horizontal,8)
-                                            } placeholder: {
+                                                    .padding(.horizontal, 8)
+                                            } else {
                                                 RoundedRectangle(cornerRadius: 4)
                                                     .fill(Color.gray.opacity(0.2))
                                                     .frame(width: 60, height: 80)
+                                                    .padding(.vertical, 4)
+                                                    .padding(.horizontal, 8)
                                             }
-                                        } else {
-                                            RoundedRectangle(cornerRadius: 4)
-                                                .fill(Color.gray.opacity(0.2))
-                                                .frame(width: 60, height: 80)
                                         }
-                                        
-                                        VStack(alignment: .leading) {
-                                            Text(article.title)
-                                                .font(.custom("CanelaTrial-Regular", size: 18))
-                                                .lineSpacing(4)
-                                                .padding(.vertical, 2)
-                                                .padding(.top, 2)
-                                            ArticleTimestampView(timestamp: article.created_at, showTime: false)
-                                        }
+                                    } else {
+                                        RoundedRectangle(cornerRadius: 4)
+                                            .fill(Color.gray.opacity(0.2))
+                                            .frame(width: 60, height: 80)
+                                            .padding(.vertical, 4)
+                                            .padding(.horizontal, 8)
                                     }
-                                    .padding(.vertical, 4)
+                                    
+                                    VStack(alignment: .leading) {
+                                        Text(article.title)
+                                            .font(.custom("CanelaTrial-Regular", size: 18))
+                                            .lineSpacing(4)
+                                            .padding(.vertical, 2)
+                                            .padding(.top, 2)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                        ArticleTimestampView(timestamp: article.created_at, showTime: false)
+                                    }
                                 }
-                                .buttonStyle(PlainButtonStyle())
-                                .listRowBackground(Color.clear)
-                                .listRowSeparator(.hidden)
-                                .offset(y: appeared ? 0 : 20)
-                                .opacity(appeared ? 1 : 0)
-                                .animation(
-                                    .easeIn(duration: 0.5)
-                                    .delay(Double(index) * 0.2),
-                                    value: appeared
-                                )
-                                .onAppear {
-                                    if index == sortedArticles.count - 3 && hasMoreContent && !isLoadingMore {
-                                        loadMoreArticles()
-                                    }
+                                .padding(.vertical, 4)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
+                            .onAppear {
+                                if index == sortedArticles.count - 3 && hasMoreContent && !isLoadingMore {
+                                    loadMoreArticles()
                                 }
                             }
-                            
-                            if isLoadingMore && hasMoreContent {
-                                HStack {
-                                    Spacer()
-                                    ProgressView()
-                                        .padding()
-                                    Spacer()
+                            .opacity(animateList ? 1 : 0)
+                            .offset(y: animateList ? 0 : 20)
+                            .animation(.easeOut(duration: 1).delay(Double(index) * 0.2), value: animateList)
+                        }
+                        
+                        if isLoadingMore && hasMoreContent {
+                            HStack {
+                                Spacer()
+                                ProgressView()
+                                    .padding()
+                                Spacer()
+                            }
+                            .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
+                        }
+                    }
+                    .listStyle(PlainListStyle())
+                    .refreshable {
+                        await refreshArticles()
+                    }
+                } else {
+                    ScrollView {
+                        VStack(spacing: 16) {
+                            ForEach(0..<5, id: \.self) { _ in
+                                HStack(alignment: .top, spacing: 8) {
+                                    RoundedRectangle(cornerRadius: 4)
+                                        .fill(Color.gray.opacity(0.2))
+                                        .frame(width: 60, height: 80)
+                                        .padding(.vertical, 4)
+                                        .padding(.horizontal, 8)
+                                    
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        Rectangle()
+                                            .fill(Color.gray.opacity(0.2))
+                                            .frame(height: 18)
+                                            .padding(.vertical, 2)
+                                            .padding(.top, 2)
+                                        
+                                        Rectangle()
+                                            .fill(Color.gray.opacity(0.2))
+                                            .frame(width: 100, height: 14)
+                                    }
+                                    .padding(.trailing, 16)
                                 }
-                                .listRowBackground(Color.clear)
-                                .listRowSeparator(.hidden)
+                                .padding(.vertical, 4)
                             }
                         }
-                        .listStyle(PlainListStyle())
-                    } else {
-                        Spacer()
+                        .padding(.horizontal)
                     }
-                }
-                
-                if isLoading {
-                    ProgressView()
                 }
             }
             .onAppear {
@@ -123,7 +151,7 @@ struct ContentView: View {
                     checkForDeepLink()
                 }
             }
-            .navigationTitle("Swiftyhub")
+            .navigationTitle("SwiftyNews")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -156,10 +184,10 @@ struct ContentView: View {
 
     private func loadInitialArticles() {
         print("Starting to load initial articles...")
-        isLoading = true
-        appeared = false
+        isLoading = false
         isContentReady = false
         currentPage = 1
+        animateList = false
         
         NewsService().fetchArticles(page: currentPage, pageSize: pageSize) { fetchedArticles, hasMore in
             DispatchQueue.main.async {
@@ -168,19 +196,62 @@ struct ContentView: View {
                     print("Successfully fetched \(fetchedArticles.count) articles")
                     self.articles = fetchedArticles
                     self.hasMoreContent = hasMore
-                    self.isLoading = false
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                         self.isContentReady = true
                         
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                            self.appeared = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            withAnimation {
+                                self.animateList = true
+                            }
                         }
                     }
                 } else {
                     print("Failed to fetch articles")
-                    self.isLoading = false
                     self.isContentReady = true
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        withAnimation {
+                            self.animateList = true
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private func refreshArticles() async {
+        isRefreshing = true
+        animateList = false
+        
+        withAnimation(.easeOut(duration: 0.3)) {
+            isContentReady = false
+        }
+        
+        await withCheckedContinuation { continuation in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                NewsService().fetchArticles(page: 1, pageSize: pageSize) { fetchedArticles, hasMore in
+                    DispatchQueue.main.async {
+                        if let fetchedArticles = fetchedArticles {
+                            print("Refreshed with \(fetchedArticles.count) articles")
+                            self.articles = fetchedArticles
+                            self.currentPage = 1
+                            self.hasMoreContent = hasMore
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            self.isContentReady = true
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                withAnimation {
+                                    self.animateList = true
+                                }
+                            }
+                            
+                            self.isRefreshing = false
+                            continuation.resume()
+                        }
+                    }
                 }
             }
         }
