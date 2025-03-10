@@ -46,6 +46,11 @@ struct swiftyhubApp: App {
                                 Label("SwifyNews", systemImage: "newspaper")
                             }
                         
+                        QuizzesTabView()
+                            .tabItem {
+                                Label("Quizzes", systemImage: "questionmark.circle")
+                            }
+                        
                         SwiftieChatbotView()
                             .tabItem {
                                 Label("TaylorChat", systemImage: "bubble.left.and.bubble.right")
