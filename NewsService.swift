@@ -15,13 +15,15 @@ class NewsService {
             return
         }
         
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
         request.httpMethod = "GET"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         request.addValue(apiKey, forHTTPHeaderField: "apikey")
         request.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.addValue("no-cache", forHTTPHeaderField: "Cache-Control")
 
         print("Starting network request...")
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Network error: \(error.localizedDescription)")
@@ -45,7 +47,6 @@ class NewsService {
                 let decodedArticles = try JSONDecoder().decode([Article].self, from: data)
                 print("Successfully decoded \(decodedArticles.count) articles")
                 
-                // If we got exactly pageSize articles, there might be more
                 let hasMore = decodedArticles.count >= pageSize
                 completion(decodedArticles, hasMore)
             } catch {
@@ -58,5 +59,23 @@ class NewsService {
         }
 
         task.resume()
+    }
+    
+    private func filterDuplicateArticles(_ articles: [Article]) -> [Article] {
+        var seenTitles = Set<String>()
+        var uniqueArticles = [Article]()
+        
+        for article in articles {
+            let normalizedTitle = article.title.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            if !seenTitles.contains(normalizedTitle) {
+                seenTitles.insert(normalizedTitle)
+                uniqueArticles.append(article)
+            } else {
+                print("Filtered out duplicate article: \(article.title)")
+            }
+        }
+        
+        return uniqueArticles
     }
 }

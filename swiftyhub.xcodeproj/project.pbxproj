@@ -22,6 +22,7 @@
 		A22F05DE2D4A4EC500235C7B /* swiftyhubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22F05DD2D4A4EC500235C7B /* swiftyhubTests.swift */; };
 		A22F05E82D4A4EC500235C7B /* swiftyhubUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22F05E72D4A4EC500235C7B /* swiftyhubUITests.swift */; };
 		A22F05EA2D4A4EC500235C7B /* swiftyhubUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22F05E92D4A4EC500235C7B /* swiftyhubUITestsLaunchTests.swift */; };
+		A2361FAA2D7E1AB000186460 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2361FA92D7E1AB000186460 /* SplashView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		A22F05E32D4A4EC500235C7B /* swiftyhubUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = swiftyhubUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A22F05E72D4A4EC500235C7B /* swiftyhubUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftyhubUITests.swift; sourceTree = "<group>"; };
 		A22F05E92D4A4EC500235C7B /* swiftyhubUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftyhubUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		A2361FA92D7E1AB000186460 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +110,7 @@
 				A21D4A612D787289000142B2 /* SettingsView.swift */,
 				A21D4A4D2D78577E000142B2 /* ArticleTimestampView.swift */,
 				A21D4A4F2D78577E000142B2 /* ContentView.swift */,
+				A2361FA92D7E1AB000186460 /* SplashView.swift */,
 				A21D4A642D787DDC000142B2 /* SwiftieChatbot.swift */,
 				A21D4A4E2D78577E000142B2 /* DateFormatter+Extensions.swift */,
 				A21D4A492D78577E000142B2 /* NewsService.swift */,
@@ -297,6 +300,7 @@
 				A21D4A652D787DDC000142B2 /* SwiftieChatbot.swift in Sources */,
 				A21D4A542D78577E000142B2 /* ArticleDetailView.swift in Sources */,
 				A21D4A552D78577E000142B2 /* ArticleTimestampView.swift in Sources */,
+				A2361FAA2D7E1AB000186460 /* SplashView.swift in Sources */,
 				A21D4A562D78577E000142B2 /* DateFormatter+Extensions.swift in Sources */,
 				A21D4A572D78577E000142B2 /* ContentView.swift in Sources */,
 			);

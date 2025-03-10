@@ -4,6 +4,7 @@ import SwiftUI
 class AppState: ObservableObject {
     @Published var selectedArticleId: UUID? = nil
     @Published var deepLinkActive: Bool = false
+    @Published var showSplash: Bool = true
 }
 
  
@@ -34,31 +35,38 @@ struct swiftyhubApp: App {
 
     var body: some Scene {
         WindowGroup {
-            TabView {
-                ContentView()
-                    .tabItem {
-                        Label("News", systemImage: "newspaper")
+            Group {
+                if appState.showSplash {
+                    SplashView()
+                        .environmentObject(appState)
+                } else {
+                    TabView {
+                        ContentView()
+                            .tabItem {
+                                Label("SwifyNews", systemImage: "newspaper")
+                            }
+                        
+                        SwiftieChatbotView()
+                            .tabItem {
+                                Label("TaylorChat", systemImage: "bubble.left.and.bubble.right")
+                            }
                     }
-                
-                SwiftieChatbotView()
-                    .tabItem {
-                        Label("Chat", systemImage: "bubble.left.and.bubble.right")
-                    }
-            }
-            .accentColor(Color("LipstickRed"))
-            .environmentObject(appState)
-            .onOpenURL { url in
-                    print("Received URL: \(url)")
-                    
-                    if url.host == "article", let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
-                       let pathComponents = components.path.split(separator: "/").last,
-                       let uuidString = String(pathComponents).removingPercentEncoding,
-                       let articleId = UUID(uuidString: uuidString) {
-                        print("Setting deep link for article: \(articleId)")
-                        appState.selectedArticleId = articleId
-                        appState.deepLinkActive = true
-                    }
+                    .accentColor(Color("LipstickRed"))
+                    .environmentObject(appState)
                 }
+            }
+            .onOpenURL { url in
+                print("Received URL: \(url)")
+                
+                if url.host == "article", let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
+                   let pathComponents = components.path.split(separator: "/").last,
+                   let uuidString = String(pathComponents).removingPercentEncoding,
+                   let articleId = UUID(uuidString: uuidString) {
+                    print("Setting deep link for article: \(articleId)")
+                    appState.selectedArticleId = articleId
+                    appState.deepLinkActive = true
+                }
+            }
         }
     }
 }
