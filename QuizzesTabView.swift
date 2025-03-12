@@ -1,16 +1,15 @@
 import SwiftUI
 
 struct QuizzesTabView: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var quizzes: [Quiz] = []
     @State private var isLoading = true
     @State private var showErrorAlert = false
     @State private var errorMessage = ""
     @State private var animateList = false
     @State private var selectedQuiz: Quiz? = nil
-    @State private var isShowingQuizDetail = false
-    @State private var preloadedQuizImage: UIImage? = nil
-
-    private let imageCache = NSCache<NSString, UIImage>()
+    @State private var refreshTrigger = false
+    
     private let bucketUrl = "https://xhjsundjajtfukpqpjxp.supabase.co/storage/v1/object/public/"
     
     var body: some View {
@@ -55,46 +54,7 @@ struct QuizzesTabView: View {
                         LazyVStack(spacing: 20) {
                             ForEach(Array(quizzes.enumerated()), id: \.element.id) { index, quiz in
                                 Button(action: {
-                                    // Preload quiz image before showing detail view
-                                    if !quiz.heroImagePath.isEmpty {
-                                        let encodedImagePath = quiz.heroImagePath.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? quiz.heroImagePath
-                                        let imageUrl = URL(string: bucketUrl + encodedImagePath)
-                                        
-                                        // Try to use cached image first
-                                        if let url = imageUrl,
-                                           let cachedImage = imageCache.object(forKey: url.absoluteString as NSString) {
-                                            preloadedQuizImage = cachedImage
-                                            selectedQuiz = quiz
-                                            isShowingQuizDetail = true
-                                        } else {
-                                            // Otherwise load the image in background first
-                                            URLSession.shared.dataTask(with: imageUrl!) { data, response, error in
-                                                if let data = data, let image = UIImage(data: data) {
-                                                    DispatchQueue.main.async {
-                                                        // Cache the image for future use
-                                                        if let url = imageUrl {
-                                                            self.imageCache.setObject(image, forKey: url.absoluteString as NSString)
-                                                        }
-                                                        preloadedQuizImage = image
-                                                        selectedQuiz = quiz
-                                                        isShowingQuizDetail = true
-                                                    }
-                                                } else {
-                                                    // Show without preloaded image if failed
-                                                    DispatchQueue.main.async {
-                                                        preloadedQuizImage = nil
-                                                        selectedQuiz = quiz
-                                                        isShowingQuizDetail = true
-                                                    }
-                                                }
-                                            }.resume()
-                                        }
-                                    } else {
-                                        // If no image, just show the quiz
-                                        preloadedQuizImage = nil
-                                        selectedQuiz = quiz
-                                        isShowingQuizDetail = true
-                                    }
+                                    selectedQuiz = quiz
                                 }) {
                                     QuizCardView(quiz: quiz)
                                         .padding(.horizontal)
@@ -117,7 +77,7 @@ struct QuizzesTabView: View {
                     }
                 }
             }
-            .navigationTitle("Quizzes")
+            .navigationTitle("Taylor Trivia")
             .navigationBarTitleDisplayMode(.large)
             .onAppear {
                 if quizzes.isEmpty {
@@ -131,11 +91,14 @@ struct QuizzesTabView: View {
                     dismissButton: .default(Text("OK"))
                 )
             }
-            .fullScreenCover(isPresented: $isShowingQuizDetail) {
-                if let quiz = selectedQuiz {
-                    QuizDetailView(quiz: quiz, preloadedImage: preloadedQuizImage)
-                        .edgesIgnoringSafeArea(.all)
-                }
+            .sheet(item: $selectedQuiz) { quiz in
+                QuizDetailView(quiz: quiz)
+                    .onDisappear {
+                        // Only refresh if the quiz was completed
+                        if quiz.isCompleted {
+                            loadQuizzes()
+                        }
+                    }
             }
         }
     }
@@ -146,7 +109,16 @@ struct QuizzesTabView: View {
         
         QuizService().fetchQuizzes { fetchedQuizzes in
             DispatchQueue.main.async {
-                self.quizzes = fetchedQuizzes
+                self.quizzes = fetchedQuizzes.sorted { q1, q2 in
+                    // Sort completed quizzes to the bottom
+                    if q1.isCompleted && !q2.isCompleted {
+                        return false
+                    } else if !q1.isCompleted && q2.isCompleted {
+                        return true
+                    }
+                    // Otherwise, maintain original order
+                    return true
+                }
                 self.isLoading = false
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -175,6 +147,8 @@ struct QuizCardView: View {
     let quiz: Quiz
     private let bucketUrl = "https://xhjsundjajtfukpqpjxp.supabase.co/storage/v1/object/public/"
     
+    private let completedOverlayOpacity: Double = 0.4
+    
     var body: some View {
         ZStack {
             if !quiz.heroImagePath.isEmpty {
@@ -191,25 +165,48 @@ struct QuizCardView: View {
                                 print("Successfully loaded image from URL: \(String(describing: imageUrl))")
                             }
                     } else if phase.error != nil {
-                        fallbackImage
+                        Rectangle()
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [getColor(for: quiz.title).opacity(0.7), getColor(for: quiz.title)]),
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            )
+                            .frame(height: 240)
                             .onAppear {
                                 print("Error loading image: \(String(describing: phase.error))")
                                 print("Failed URL: \(String(describing: imageUrl))")
                                 print("Image path: \(quiz.heroImagePath)")
                             }
                     } else {
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.2))
                             .frame(height: 240)
-                            .background(Color.gray.opacity(0.2))
+                            .overlay(
+                                ProgressView()
+                            )
                             .onAppear {
                                 print("Loading image from URL: \(String(describing: imageUrl))")
                             }
                     }
                 }
             } else {
-                fallbackImage
+                Rectangle()
+                    .fill(
+                        LinearGradient(
+                            gradient: Gradient(colors: [getColor(for: quiz.title).opacity(0.7), getColor(for: quiz.title)]),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
                     .frame(height: 240)
+            }
+            
+            if quiz.heroImagePath.isEmpty {
+                Image(systemName: getSystemImageName(for: quiz.title))
+                    .font(.system(size: 50))
+                    .foregroundColor(.white.opacity(0.8))
             }
             
             Rectangle()
@@ -222,11 +219,28 @@ struct QuizCardView: View {
                 )
             
             VStack(alignment: .leading, spacing: 10) {
+                if quiz.isCompleted {
+                    HStack {
+                        Spacer()
+                        HStack(spacing: 4) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.green)
+                            Text("\(Int(quiz.scorePercentage))%")
+                                .fontWeight(.semibold)
+                        }
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.white)
+                        .cornerRadius(8)
+                    }
+                }
+                
                 Spacer()
                 
                 Text(quiz.title)
                     .font(.custom("CanelaTrial-Regular", size: 26))
                     .foregroundColor(.white)
+                    .lineSpacing(4)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
                 
@@ -262,39 +276,22 @@ struct QuizCardView: View {
                     .background(Color.blue.opacity(0.9))
                     .foregroundColor(.white)
                     .cornerRadius(8)
-                    
                     Spacer()
                 }
             }
             .padding(16)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+            
+            if quiz.isCompleted {
+                Color.white
+                    .opacity(completedOverlayOpacity)
+            }
         }
         .frame(height: 240)
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
         .onAppear {
             print("QuizCardView appeared for quiz: \(quiz.title), image path: \(quiz.heroImagePath)")
-        }
-    }
-    
-    private var fallbackImage: some View {
-        ZStack {
-            Rectangle()
-                .fill(Color.gray.opacity(0.3))
-                .aspectRatio(16/9, contentMode: .fill)
-                .frame(height: 240)
-            
-            Image(systemName: getSystemImageName(for: quiz.title))
-                .font(.system(size: 50))
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [getColor(for: quiz.title).opacity(0.7), getColor(for: quiz.title)]),
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                )
         }
     }
     
@@ -338,6 +335,19 @@ struct QuizCardView: View {
             return Color.purple
         default:
             return Color.blue
+        }
+    }
+    
+    private func scoreColor(percentage: Double) -> Color {
+        switch percentage {
+        case 90...100:
+            return .green
+        case 70..<90:
+            return .blue
+        case 50..<70:
+            return .orange
+        default:
+            return .red
         }
     }
 }

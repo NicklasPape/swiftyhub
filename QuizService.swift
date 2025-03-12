@@ -51,7 +51,6 @@ class QuizService {
             
             if let httpResponse = response as? HTTPURLResponse {
                 print("HTTP Status Code: \(httpResponse.statusCode)")
-                print("Response Headers: \(httpResponse.allHeaderFields)")
             }
             
             guard let data = data else {
@@ -68,23 +67,12 @@ class QuizService {
                 
                 if jsonString.contains("hero_image_path") {
                     print("Response contains hero_image_path field")
-                    
-                    var searchRange = jsonString.startIndex
-                    let heroImagePathKey = "\"hero_image_path\":"
-                    
-                    while let keyRange = jsonString.range(of: heroImagePathKey, options: [], range: searchRange..<jsonString.endIndex) {
-                        searchRange = keyRange.upperBound
-                        
-                        if let valueStart = jsonString.range(of: "\"quiz_images/", options: [], range: searchRange..<jsonString.endIndex),
-                           let valueEnd = jsonString.range(of: "\"", options: [], range: valueStart.upperBound..<jsonString.endIndex) {
-                            
-                            let imagePath = jsonString[valueStart.lowerBound..<valueEnd.upperBound]
-                            print("Found image path: \(imagePath)")
-                            searchRange = valueEnd.upperBound
-                        }
-                    }
+                }
+                
+                if jsonString.contains("questions") {
+                    print("Response contains questions field")
                 } else {
-                    print("hero_image_path field NOT found in response")
+                    print("questions field NOT found in response")
                 }
             }
             
@@ -100,6 +88,11 @@ class QuizService {
                 
                 for (i, quiz) in quizzes.enumerated() {
                     print("Quiz #\(i+1): \(quiz.title) - image path: '\(quiz.heroImagePath)'")
+                    if let questions = quiz.questions {
+                        print("  - Quiz has \(questions.count) questions")
+                    } else {
+                        print("  - Quiz has no questions decoded")
+                    }
                 }
                 
                 completion(quizzes, nil)
@@ -109,6 +102,79 @@ class QuizService {
                     print("Raw response causing error: \(dataString)")
                 }
                 completion(nil, error)
+            }
+        }
+        
+        task.resume()
+    }
+    
+    func fetchQuizDetails(quizId: String, completion: @escaping (Quiz?) -> Void) {
+        let endpoint = "\(supabaseUrl)/rest/v1/quizzes?id=eq.\(quizId)&select=*"
+        print("Fetching quiz details from: \(endpoint)")
+        
+        guard let url = URL(string: endpoint) else {
+            print("Invalid URL for quiz details")
+            DispatchQueue.main.async { completion(nil) }
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue(apiKey, forHTTPHeaderField: "apikey")
+        request.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        request.addValue("no-cache", forHTTPHeaderField: "Cache-Control")
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error fetching quiz details: \(error.localizedDescription)")
+                DispatchQueue.main.async { completion(nil) }
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print("Quiz details HTTP Status Code: \(httpResponse.statusCode)")
+            }
+            
+            guard let data = data else {
+                print("No quiz details data received")
+                DispatchQueue.main.async { completion(nil) }
+                return
+            }
+            
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("QUIZ DETAILS JSON:")
+                print(jsonString)
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                decoder.dateDecodingStrategy = .formatted(dateFormatter)
+                
+                let quizzes = try decoder.decode([Quiz].self, from: data)
+                if let quiz = quizzes.first {
+                    print("Successfully decoded quiz details: \(quiz.title)")
+                    if let questions = quiz.questions {
+                        print("Found \(questions.count) questions")
+                        for (i, question) in questions.enumerated() {
+                            print("  Question \(i+1): \(question.text)")
+                        }
+                    } else {
+                        print("No questions found in the quiz")
+                    }
+                    DispatchQueue.main.async { completion(quiz) }
+                } else {
+                    print("Quiz with ID \(quizId) not found")
+                    DispatchQueue.main.async { completion(nil) }
+                }
+            } catch {
+                print("Error decoding quiz details: \(error)")
+                if let dataString = String(data: data, encoding: .utf8) {
+                    print("Raw JSON causing error: \(dataString)")
+                }
+                DispatchQueue.main.async { completion(nil) }
             }
         }
         

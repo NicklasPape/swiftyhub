@@ -1,73 +1,77 @@
 import Foundation
 
 struct Quiz: Identifiable, Codable {
-    var id: UUID = UUID()
-    var title: String
-    var description: String
-    var heroImagePath: String = ""
-    var createdAt: Date = Date()
-    var difficulty: String = "Medium"
+    let id: String
+    let title: String
+    let description: String
+    let difficulty: String
+    let no_questions: Int
+    let heroImagePath: String
+    let questions: [Question]?
     
-    // These could be expanded upon when you're ready to implement the actual quiz functionality
-    var questions: [Question]?
-    var no_questions: Int = 0
+    private static let completedQuizzesKey = "completedQuizzes"
     
-    // CodingKeys enum to handle Supabase's snake_case format
+    var isCompleted: Bool {
+        let completedQuizzes = UserDefaults.standard.dictionary(forKey: Quiz.completedQuizzesKey) as? [String: Double] ?? [:]
+        return completedQuizzes[id] != nil
+    }
+    
+    var scorePercentage: Double {
+        let completedQuizzes = UserDefaults.standard.dictionary(forKey: Quiz.completedQuizzesKey) as? [String: Double] ?? [:]
+        return completedQuizzes[id] ?? 0.0
+    }
+    
     enum CodingKeys: String, CodingKey {
         case id
         case title
         case description
-        case heroImagePath = "hero_image_path"
-        case createdAt = "created_at"
-        case questions
         case difficulty
         case no_questions
+        case heroImagePath = "hero_image_path"
+        case questions
     }
     
-    init(title: String, description: String, heroImagePath: String = "", difficulty: String = "Medium", no_questions: Int = 0, createdAt: Date = Date(), questions: [Question]? = nil) {
+    init(title: String, description: String, heroImagePath: String, difficulty: String, no_questions: Int) {
+        self.id = UUID().uuidString
         self.title = title
         self.description = description
         self.heroImagePath = heroImagePath
         self.difficulty = difficulty
         self.no_questions = no_questions
-        self.createdAt = createdAt
-        self.questions = questions
+        self.questions = nil
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        // Required fields
-        id = try container.decode(UUID.self, forKey: .id)
+        id = try container.decode(String.self, forKey: .id)
         title = try container.decode(String.self, forKey: .title)
         description = try container.decode(String.self, forKey: .description)
-        
-        // Optional fields with defaults
         heroImagePath = try container.decodeIfPresent(String.self, forKey: .heroImagePath) ?? ""
-        createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt) ?? Date()
         difficulty = try container.decodeIfPresent(String.self, forKey: .difficulty) ?? "Medium"
-        
-        // Handle both cases: when questions is a number or an array
-        if let questionsArray = try? container.decodeIfPresent([Question].self, forKey: .questions) {
-            questions = questionsArray
-            no_questions = questionsArray.count
-        } else if let questionsCount = try? container.decodeIfPresent(Int.self, forKey: .questions) {
-            // If questions is a number, use it as the count and set questions to nil
-            questions = nil
-            no_questions = questionsCount
-        } else {
-            questions = nil
-            // Try to get no_questions from its own field if available
-            no_questions = try container.decodeIfPresent(Int.self, forKey: .no_questions) ?? 0
-        }
+        no_questions = try container.decodeIfPresent(Int.self, forKey: .no_questions) ?? 0
+        questions = try container.decodeIfPresent([Question].self, forKey: .questions)
         
         print("Decoded quiz: \(title), image path: \(heroImagePath), difficulty: \(difficulty), no questions: \(no_questions)")
     }
+    
+    static func markCompleted(_ quizId: String, score: Double) {
+        var completedQuizzes = UserDefaults.standard.dictionary(forKey: Quiz.completedQuizzesKey) as? [String: Double] ?? [:]
+        completedQuizzes[quizId] = score
+        UserDefaults.standard.set(completedQuizzes, forKey: completedQuizzesKey)
+        UserDefaults.standard.synchronize()
+    }
+
+    static func resetCompletion(_ quizId: String) {
+        var completedQuizzes = UserDefaults.standard.dictionary(forKey: Quiz.completedQuizzesKey) as? [String: Double] ?? [:]
+        completedQuizzes.removeValue(forKey: quizId)
+        UserDefaults.standard.set(completedQuizzes, forKey: completedQuizzesKey)
+        UserDefaults.standard.synchronize()
+    }
 }
 
-// This structure would be used when you're ready to implement the actual quiz functionality
 struct Question: Identifiable, Codable {
-    var id: UUID = UUID()
+    var id: String
     var text: String
     var options: [String]
     var correctAnswerIndex: Int
@@ -76,12 +80,24 @@ struct Question: Identifiable, Codable {
         case id
         case text
         case options
-        case correctAnswerIndex = "correct_answer_index"
+        case correctAnswerIndex
     }
     
     init(text: String, options: [String], correctAnswerIndex: Int) {
+        self.id = UUID().uuidString
         self.text = text
         self.options = options
         self.correctAnswerIndex = correctAnswerIndex
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        id = try container.decode(String.self, forKey: .id)
+        text = try container.decode(String.self, forKey: .text)
+        options = try container.decode([String].self, forKey: .options)
+        correctAnswerIndex = try container.decode(Int.self, forKey: .correctAnswerIndex)
+        
+        print("Successfully decoded question: \(text)")
     }
 }

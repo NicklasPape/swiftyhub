@@ -27,6 +27,8 @@
 		A2361FAE2D7F047000186460 /* QuizService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2361FAD2D7F047000186460 /* QuizService.swift */; };
 		A2361FB02D7F048000186460 /* QuizDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2361FAF2D7F048000186460 /* QuizDetailView.swift */; };
 		A2361FB22D7F049A00186460 /* QuizzesTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2361FB12D7F049A00186460 /* QuizzesTabView.swift */; };
+		A2361FB52D8038FD00186460 /* QuizFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2361FB42D8038FD00186460 /* QuizFlowView.swift */; };
+		A2B9DEDC2D804A390018BEE0 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = A2B9DEDB2D804A390018BEE0 /* ConfettiSwiftUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +73,7 @@
 		A2361FAD2D7F047000186460 /* QuizService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizService.swift; sourceTree = "<group>"; };
 		A2361FAF2D7F048000186460 /* QuizDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizDetailView.swift; sourceTree = "<group>"; };
 		A2361FB12D7F049A00186460 /* QuizzesTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizzesTabView.swift; sourceTree = "<group>"; };
+		A2361FB42D8038FD00186460 /* QuizFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizFlowView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2B9DEDC2D804A390018BEE0 /* ConfettiSwiftUI in Frameworks */,
 				A21D4A682D787EB8000142B2 /* OpenAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -125,6 +129,7 @@
 				A2361FAB2D7F045A00186460 /* Quiz.swift */,
 				A2361FAD2D7F047000186460 /* QuizService.swift */,
 				A2361FAF2D7F048000186460 /* QuizDetailView.swift */,
+				A2361FB42D8038FD00186460 /* QuizFlowView.swift */,
 				A2361FB12D7F049A00186460 /* QuizzesTabView.swift */,
 				A21D4A4A2D78577E000142B2 /* swiftyhubApp.swift */,
 				A2CFFDD92D4ABDAF00677227 /* Resources */,
@@ -187,6 +192,7 @@
 			name = swiftyhub;
 			packageProductDependencies = (
 				A21D4A672D787EB8000142B2 /* OpenAI */,
+				A2B9DEDB2D804A390018BEE0 /* ConfettiSwiftUI */,
 			);
 			productName = swiftyhub;
 			productReference = A22F05C92D4A4EC300235C7B /* swiftyhub.app */;
@@ -262,6 +268,7 @@
 			mainGroup = A22F05C02D4A4EC300235C7B;
 			packageReferences = (
 				A21D4A662D787EB8000142B2 /* XCRemoteSwiftPackageReference "OpenAI" */,
+				A2B9DEDA2D804A390018BEE0 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 			);
 			productRefGroup = A22F05CA2D4A4EC300235C7B /* Products */;
 			projectDirPath = "";
@@ -315,6 +322,7 @@
 				A21D4A542D78577E000142B2 /* ArticleDetailView.swift in Sources */,
 				A2361FAE2D7F047000186460 /* QuizService.swift in Sources */,
 				A21D4A552D78577E000142B2 /* ArticleTimestampView.swift in Sources */,
+				A2361FB52D8038FD00186460 /* QuizFlowView.swift in Sources */,
 				A2361FAC2D7F045A00186460 /* Quiz.swift in Sources */,
 				A2361FAA2D7E1AB000186460 /* SplashView.swift in Sources */,
 				A21D4A562D78577E000142B2 /* DateFormatter+Extensions.swift in Sources */,
@@ -670,6 +678,14 @@
 				minimumVersion = 0.3.6;
 			};
 		};
+		A2B9DEDA2D804A390018BEE0 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -677,6 +693,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A21D4A662D787EB8000142B2 /* XCRemoteSwiftPackageReference "OpenAI" */;
 			productName = OpenAI;
+		};
+		A2B9DEDB2D804A390018BEE0 /* ConfettiSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A2B9DEDA2D804A390018BEE0 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
+			productName = ConfettiSwiftUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

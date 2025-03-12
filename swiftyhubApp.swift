@@ -43,17 +43,17 @@ struct swiftyhubApp: App {
                     TabView {
                         ContentView()
                             .tabItem {
-                                Label("SwifyNews", systemImage: "newspaper")
+                                Label("Swifty News", systemImage: "newspaper")
                             }
                         
                         QuizzesTabView()
                             .tabItem {
-                                Label("Quizzes", systemImage: "questionmark.circle")
+                                Label("Taylor Trivia", systemImage: "questionmark.circle")
                             }
                         
                         SwiftieChatbotView()
                             .tabItem {
-                                Label("TaylorChat", systemImage: "bubble.left.and.bubble.right")
+                                Label("Taylor Chat", systemImage: "bubble")
                             }
                     }
                     .accentColor(Color("LipstickRed"))

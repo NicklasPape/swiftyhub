@@ -1,6 +1,15 @@
 {
-  "originHash" : "c351aabe13067917247f7926404d096603b95663248b51124280feb61a2edf30",
+  "originHash" : "ee341ec9cd3882a8272db798e456d0c01cb056fd6544038b419df87566927d94",
   "pins" : [
+    {
+      "identity" : "confettiswiftui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/simibac/ConfettiSwiftUI.git",
+      "state" : {
+        "revision" : "77ce21c82cc5fa608ac921a0dea09dd85b5432c7",
+        "version" : "2.0.2"
+      }
+    },
     {
       "identity" : "openai",
       "kind" : "remoteSourceControl",
