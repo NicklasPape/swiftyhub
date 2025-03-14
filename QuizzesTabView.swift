@@ -109,16 +109,7 @@ struct QuizzesTabView: View {
         
         QuizService().fetchQuizzes { fetchedQuizzes in
             DispatchQueue.main.async {
-                self.quizzes = fetchedQuizzes.sorted { q1, q2 in
-                    // Sort completed quizzes to the bottom
-                    if q1.isCompleted && !q2.isCompleted {
-                        return false
-                    } else if !q1.isCompleted && q2.isCompleted {
-                        return true
-                    }
-                    // Otherwise, maintain original order
-                    return true
-                }
+                self.quizzes = fetchedQuizzes
                 self.isLoading = false
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
